@@ -5,7 +5,7 @@ A JS library for parsing, translating and constructing toki pona.
 
 - [x] Parsing syllables
 - [x] Parsing separators
-- [ ] Parsing words
+- [x] Parsing words
 - [ ] Parsing words with adjectives
 - [ ] Parsing pronouns
 - [ ] Parsing prepositions (lon, ala)
