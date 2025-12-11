@@ -1,6 +1,6 @@
 {
   "name": "tokipona",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A JS library for parsing, translating and constructing toki pona.",
   "keywords": [
     "toki",
@@ -23,7 +23,7 @@
   "files": ["dist/*"],
   "scripts": {
     "build": "vite build",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "test": "vitest"
   },
   "devDependencies": {
