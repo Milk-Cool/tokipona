@@ -26,6 +26,7 @@ export function nextNoun(text: string): [Noun, string, boolean] {
 
         if(isNounTerminator(word)) return [minimizeNoun(ret), text, true];
         if(isSpecialPronoun(ret.noun) && isVerbTerminator(word)) {
+            if(ret.ala) text = "ala " + text;
             while(ret.modifiers && ret.modifiers.length > 0 && isVerbModifier(ret.modifiers.at(-1)))
                 text = ret.modifiers.splice(-1, 1)[0] + " " + text;
             if(ret.modifiers && ret.modifiers.length > 0) text = ret.modifiers.splice(-1, 1)[0] + " " + text; // do not touch the noun itself as there would be no noun
