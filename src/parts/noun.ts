@@ -38,7 +38,11 @@ export function nextNoun(text: string): [Noun, string, boolean] {
             ret.noun = word;
             continue;
         }
-        if(!ret.modifiers) ret.modifiers = [];
-        ret.modifiers.push(word);
+        if(word === "ala") {
+            ret.ala = !ret.ala;
+        } else {
+            if(!ret.modifiers) ret.modifiers = [];
+            ret.modifiers.push(word);
+        }
     }
 }

@@ -40,7 +40,7 @@ export function minimizeVerb(verb: Verb) {
 export function joinNoun(noun: Noun) {
     return typeof noun === "string"
     ? noun
-    : [noun.noun].concat(noun.modifiers ?? []).join(" ") + (noun.pi ? " pi " + joinNoun(noun.pi) : "");
+    : [noun.noun].concat(noun.modifiers ?? []).join(" ") + (noun.ala ? " ala" : "") + (noun.pi ? " pi " + joinNoun(noun.pi) : "");
 }
 export function joinVerb(verb: Verb) {
     return typeof verb === "string"

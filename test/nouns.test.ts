@@ -34,3 +34,16 @@ test("correctly parses complex nouns (noun pi noun) from text", () => {
         expect(joinNoun(noun)).toBe(v);
     }
 });
+
+test("correctly parses negative nouns (ala's)", () => {
+    const tests: Record<string, string> = {
+        "jan pona ala": "jan pona ala",
+        "jan pona ala ala": "jan pona"
+    }
+    for(const k in tests) {
+        const v = tests[k];
+        const [noun, _rest, valid] = nextNoun(k);
+        expect(valid).toBeTruthy();
+        expect(joinNoun(noun)).toBe(v);
+    }
+});
