@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "module": "es2022",
+        "moduleResolution": "bundler",
+        "sourceMap": true
+    },
+    "include": ["src"]
+}

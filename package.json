@@ -1,0 +1,34 @@
+{
+  "name": "tokipona",
+  "version": "0.1.0",
+  "description": "A JS library for parsing, translating and constructing toki pona.",
+  "keywords": [
+    "toki",
+    "pona",
+    "tokipona",
+    "conlang"
+  ],
+  "homepage": "https://github.com/Milk-Cool/tokipona#readme",
+  "bugs": {
+    "url": "https://github.com/Milk-Cool/tokipona/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Milk-Cool/tokipona.git"
+  },
+  "license": "MIT",
+  "author": "Milk_Cool",
+  "type": "module",
+  "main": "dist/index.js",
+  "files": ["dist/*"],
+  "scripts": {
+    "build": "vite build",
+    "prepublish": "npm run build",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "vite": "^7.2.7",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^4.0.15"
+  }
+}
