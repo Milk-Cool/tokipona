@@ -44,4 +44,16 @@ test("correctly parses simple sentences (only object-verb-subject)", () => {
     expect(joinNoun(res6.object as Noun)).toBe("pipi ni");
     expect(joinVerb(res6.verb as Verb)).toBe("moku");
     expect(joinNoun(res6.subject as Noun)).toBe("kili");
+
+    const test7 = "tomo pi telo nasa li lon ma tomo";
+    const [res7, _rem7, val7] = nextSentence(test7);
+    testValidity(res7, val7, [true, true, true]);
+    expect(joinNoun(res7.object as Noun)).toBe("tomo pi telo nasa");
+    expect(joinVerb(res7.verb as Verb)).toBe("lon");
+    expect(joinNoun(res7.subject as Noun)).toBe("ma tomo");
+
+    const test8 = "mi jan lawa pi tomo tawa kon";
+    const [res8, _rem8, val8] = nextSentence(test8);
+    testValidity(res8, val8, [true, false, false]);
+    expect(joinNoun(res8.object as Noun)).toBe("mi jan lawa pi tomo tawa kon");
 });

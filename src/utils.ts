@@ -15,6 +15,12 @@ export function isVerbTerminator(word: string) {
 }
 
 // TODO: consult the wiser people and check if this is correct
+export function isSimpleVerb(word: string) {
+    return [
+        "anpa", "lon", "ante", "jo", "pilin", "kepeken"
+    ].includes(word);
+}
+// same here
 export function isVerbModifier(word: string) {
     return [
         "ala", "ante", "lili", "meso", "open", "sama",

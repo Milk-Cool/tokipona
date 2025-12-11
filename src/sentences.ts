@@ -1,6 +1,6 @@
 import { Noun, Sentence, Verb } from "./types";
 import { nextWord } from "./words";
-import { isNounTerminator, isSpecialPronoun, isVerbTerminator } from "./utils";
+import { isNounTerminator, isSimpleVerb, isVerbModifier, isVerbTerminator } from "./utils";
 import { nextNoun } from "./parts/noun";
 import { nextVerb } from "./parts/verb";
 
@@ -30,19 +30,37 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
                 text = tmpText;
             }
         } else if(state === "verb") {
-            [verb, text, valid] = nextVerb(text);
-            if(verb === "") return [ret, text, true];
+            // checking for simple nouns
+            [word, tmpText, valid] = nextWord(text);
+            if(word === "") return [ret, text, true];
             if(!valid) return [{}, originalText, false];
-            ret.verb = verb;
-            state = "subject";
-
-            while(true) {
-                [word, tmpText, valid] = nextWord(text);
-                if(word === "") return [ret, text, true];
-                if(!valid) return [{}, originalText, false];
-                if(!isVerbTerminator(word)) break;
+            if(isSimpleVerb(word)) {
                 text = tmpText;
+                ret.verb = { verb: word };
+                while(true) {
+                    [word, tmpText, valid] = nextWord(text);
+                    if(word === "") return [ret, text, true];
+                    if(!valid) return [{}, originalText, false];
+                    if(!isVerbModifier(word)) break;
+                    if(!ret.verb.modifiers) ret.verb.modifiers = [];
+                    ret.verb.modifiers.push(word);
+                    text = tmpText;
+                }
+            } else {
+                [verb, text, valid] = nextVerb(text);
+                if(verb === "") return [ret, text, true];
+                if(!valid) return [{}, originalText, false];
+                ret.verb = verb;
+
+                while(true) {
+                    [word, tmpText, valid] = nextWord(text);
+                    if(word === "") return [ret, text, true];
+                    if(!valid) return [{}, originalText, false];
+                    if(!isVerbTerminator(word)) break;
+                    text = tmpText;
+                }
             }
+            state = "subject";
         } else if(state === "subject") {
             [noun, text, valid] = nextNoun(text);
             if(noun === "") return [ret, text, true];
