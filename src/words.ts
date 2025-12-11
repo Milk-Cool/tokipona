@@ -36,10 +36,11 @@ export function isValidWord(word: string) {
  * @returns [word, remaining text, is word valid]
  */
 export function nextWord(text: string): [string, string, boolean] {
-    let textTmp = text.replace(/^[^ptkmnslwjaeiou]*/i, ""), textPeek = "", valid = true, sep = false, syl = "", word = "";
+    const regexTmp = /^[^ptkmnslwjaeiou]*/i;
+    let textTmp = text.replace(regexTmp, ""), textPeek = "", valid = true, sep = false, syl = "", word = "";
     while(true) {
         [syl, textTmp, valid, sep] = nextSyllable(textTmp);
-        if(syl === "" || sep) return [word, text.replace(word, ""), isValidWord(word)];
+        if(syl === "" || sep) return [word, text.replace(regexTmp, "").replace(word, "").replace(regexTmp, ""), isValidWord(word)];
         if(!valid) return ["", text, false];
         word += syl;
     }
