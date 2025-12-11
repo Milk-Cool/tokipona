@@ -56,4 +56,11 @@ test("correctly parses simple sentences (only object-verb-subject)", () => {
     const [res8, _rem8, val8] = nextSentence(test8);
     testValidity(res8, val8, [true, false, false]);
     expect(joinNoun(res8.object as Noun)).toBe("mi jan lawa pi tomo tawa kon");
+
+    const test9 = "mi toki e toki pona";
+    const [res9, _rem9, val9] = nextSentence(test9);
+    testValidity(res9, val9, [true, true, true]);
+    expect(joinNoun(res9.object as Noun)).toBe("mi");
+    expect(joinVerb(res9.verb as Verb)).toBe("toki");
+    expect(joinNoun(res9.subject as Noun)).toBe("toki pona");
 });
