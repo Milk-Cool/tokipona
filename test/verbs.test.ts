@@ -6,6 +6,7 @@ test("correctly parses verbs from text", () => {
     const tests: Record<string, string> = {
         "toki e toki pona": "toki",
         "nasa": "nasa",
+        "nasa ala": "nasa ala",
         "pana e telo": "pana",
         "pana mute e olin": "pana mute"
     }

@@ -45,5 +45,5 @@ export function joinNoun(noun: Noun) {
 export function joinVerb(verb: Verb) {
     return typeof verb === "string"
     ? verb
-    : [verb.verb].concat(verb.modifiers ?? []).join(" ");
+    : [verb.verb].concat(verb.modifiers ?? []).join(" ") + (verb.ala ? " ala" : "");
 }

@@ -23,7 +23,11 @@ export function nextVerb(text: string): [Verb, string, boolean] {
             ret.verb = word;
             continue;
         }
-        if(!ret.modifiers) ret.modifiers = [];
-        ret.modifiers.push(word);
+        if(word === "ala")
+            ret.ala = true;
+        else {
+            if(!ret.modifiers) ret.modifiers = [];
+            ret.modifiers.push(word);
+        }
     }
 }
