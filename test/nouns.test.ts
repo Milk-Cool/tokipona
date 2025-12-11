@@ -21,3 +21,16 @@ test("correctly parses nouns from text", () => {
         expect(joinNoun(noun)).toBe(v);
     }
 });
+
+test("correctly parses complex nouns (noun pi noun) from text", () => {
+    const tests: Record<string, string> = {
+        "tomo pi telo nasa li lon ma tomo": "tomo pi telo nasa",
+        "jan lawa pi tomo tawa kon li lon sewi": "jan lawa pi tomo tawa kon"
+    }
+    for(const k in tests) {
+        const v = tests[k];
+        const [noun, _rest, valid] = nextNoun(k);
+        expect(valid).toBeTruthy();
+        expect(joinNoun(noun)).toBe(v);
+    }
+});

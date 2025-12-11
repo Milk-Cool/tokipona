@@ -7,6 +7,7 @@ test("correctly identifies valid syllables", () => {
     expect(isValidSyllable("ki")).toBeTruthy();
     expect(isValidSyllable("po")).toBeTruthy();
     expect(isValidSyllable("na")).toBeTruthy();
+    expect(isValidSyllable("jan")).toBeTruthy();
     
     // invalid syllables consisting of [opt consonant][vowel][opt n]
     expect(isValidSyllable("tin")).toBeFalsy();

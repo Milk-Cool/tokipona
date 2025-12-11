@@ -1,4 +1,4 @@
-export type Noun = string | { noun: string, modifiers?: string[] };
+export type Noun = string | { noun: string, modifiers?: string[], pi?: Noun };
 export type Verb = string | { verb: string, modifiers?: string[] };
 
 export type Sentence = {

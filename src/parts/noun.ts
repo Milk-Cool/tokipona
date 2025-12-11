@@ -15,6 +15,15 @@ export function nextNoun(text: string): [Noun, string, boolean] {
         if(word === "") return [minimizeNoun(ret), text, true];
         if(!valid) return ["", originalText, false];
 
+        if(word === "pi") {
+            if(ret.noun === "") return ["", originalText, false];
+            text = newText;
+            const [pi, piRem, piValid] = nextNoun(text);
+            if(!piValid) return ["", originalText, false];
+            ret.pi = pi;
+            return [minimizeNoun(ret), piRem, true];
+        }
+
         if(isNounTerminator(word)) return [minimizeNoun(ret), text, true];
         if(isSpecialPronoun(ret.noun) && isVerbTerminator(word)) {
             while(ret.modifiers && ret.modifiers.length > 0 && isVerbModifier(ret.modifiers.at(-1)))
