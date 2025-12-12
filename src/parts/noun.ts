@@ -1,6 +1,6 @@
 import { Noun } from "../types";
 import { nextWord } from "../words";
-import { isNounTerminator, isSpecialPronoun, isVerbTerminator, minimizeNoun, isVerbModifier, isPreverb, joinNoun } from "../utils";
+import { isNounTerminator, isSpecialPronoun, isVerbTerminator, finalizeNoun, isVerbModifier, isPreverb, MAX_ITER, TimeoutError } from "../utils";
 
 /**
  * Gets the next noun in text. May also be used to get the next pronoun.
@@ -9,10 +9,11 @@ import { isNounTerminator, isSpecialPronoun, isVerbTerminator, minimizeNoun, isV
  */
 export function nextNoun(text: string): [Noun, string, boolean] {
     const originalText = text;
-    let ret: Noun = { noun: "" }, word: string, valid: boolean, tmpText: string, isAlax: boolean = false;
+    let ret: Noun = { noun: "" }, word: string, valid: boolean, tmpText: string, isAlax: boolean = false, iter = 0;
     while(true) {
+        if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a noun");
         [word, tmpText, valid] = nextWord(text);
-        if(word === "") return [minimizeNoun(ret), text, true];
+        if(word === "") return [finalizeNoun(ret), text, true];
         if(!valid) return ["", originalText, false];
 
         if(word === "pi") {
@@ -21,7 +22,7 @@ export function nextNoun(text: string): [Noun, string, boolean] {
             const [pi, piRem, piValid] = nextNoun(text);
             if(!piValid) return ["", originalText, false];
             ret.pi = pi;
-            return [minimizeNoun(ret), piRem, true];
+            return [finalizeNoun(ret), piRem, true];
         }
 
         if(isSpecialPronoun(ret.noun) && isVerbTerminator(word)) {
@@ -32,9 +33,9 @@ export function nextNoun(text: string): [Noun, string, boolean] {
             while(ret.modifiers && ret.modifiers.length > idx && (isVerbModifier(ret.modifiers.at(-1)) || oidx !== -1))
                 text = ret.modifiers.splice(-1, 1)[0] + " " + text;
             if(ret.modifiers && ret.modifiers.length > idx) text = ret.modifiers.splice(-1, 1)[0] + " " + text; // do not touch the noun itself as there would be no noun
-            return [minimizeNoun(ret), text, true];
+            return [finalizeNoun(ret), text, true];
         }
-        if(isNounTerminator(word)) return [minimizeNoun(ret), text, true];
+        if(isNounTerminator(word)) return [finalizeNoun(ret), text, true];
         
         text = tmpText;
 

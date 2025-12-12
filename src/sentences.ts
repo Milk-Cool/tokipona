@@ -1,6 +1,6 @@
 import { Noun, Sentence, Verb } from "./types";
 import { nextWord } from "./words";
-import { isNounTerminator, isSimpleVerb, isVerbModifier, isVerbTerminator } from "./utils";
+import { isNounTerminator, isSimpleVerb, isVerbModifier, isVerbTerminator, MAX_ITER, TimeoutError } from "./utils";
 import { nextNoun } from "./parts/noun";
 import { nextVerb } from "./parts/verb";
 
@@ -13,7 +13,7 @@ type SentenceParseState = "subject" | "verb" | "object";
  */
 export function nextSentence(text: string): [Sentence, string, boolean] {
     const originalText = text, ret: Sentence = {};
-    let noun: Noun, verb: Verb, word: string, valid: boolean, state: SentenceParseState = "object", tmpText: string;
+    let noun: Noun, verb: Verb, word: string, valid: boolean, state: SentenceParseState = "object", tmpText: string, iter = 0;
 
     [word, tmpText, valid] = nextWord(text);
     if(word === "taso") {
@@ -28,6 +28,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
         text = tmpText;
         ret.time = { modifiers: [] };
         while(true) {
+            if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a sentence");
             [word, text, valid] = nextWord(text);
             if(word === "la") break;
             ret.time.modifiers.push(word);
@@ -35,6 +36,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
     }
 
     while(true) {
+        if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a sentence");
         if(state === "object") {
             [noun, text, valid] = nextNoun(text);
             if(noun === "") return [ret, text, true];
@@ -43,6 +45,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
             state = "verb";
 
             while(true) {
+                if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a sentence");
                 [word, tmpText, valid] = nextWord(text);
                 if(word === "") return [ret, text, true];
                 if(!valid) return [{}, originalText, false];
@@ -58,6 +61,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
                 text = tmpText;
                 ret.verb = { verb: word };
                 while(true) {
+                    if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a sentence");
                     [word, tmpText, valid] = nextWord(text);
                     if(word === "") return [ret, text, true];
                     if(!valid) return [{}, originalText, false];
@@ -73,6 +77,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
                 ret.verb = verb;
 
                 while(true) {
+                    if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a sentence");
                     [word, tmpText, valid] = nextWord(text);
                     if(word === "") return [ret, text, true];
                     if(!valid) return [{}, originalText, false];

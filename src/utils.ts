@@ -34,11 +34,31 @@ export function isPreverb(word: string) {
     ].includes(word);
 }
 
-export function minimizeNoun(noun: Noun) {
+export function finalizeNoun(noun: Noun) {
+    if(typeof noun === "object" && noun.alax) {
+        let idx = [noun.noun].concat(noun.modifiers ?? []).indexOf(noun.alax[0]);
+        while(idx < Math.min(noun.alax.length, (noun.modifiers ?? []).length + 1) && [noun.noun].concat(noun.modifiers ?? [])[idx] === noun.alax[idx])
+            idx++;
+        for(let i = idx; i < noun.alax.length; i++) {
+            if(!noun.modifiers) noun.modifiers = [];
+            noun.modifiers.push(noun.alax[i]);
+        }
+        noun.alax = noun.alax.slice(0, idx);
+    }
     if(typeof noun === "object" && (!noun.modifiers || noun.modifiers.length === 0) && !noun.ala && (!noun.alax || noun.alax.length === 0) && !noun.pi) return noun.noun;
     return noun;
 }
-export function minimizeVerb(verb: Verb) {
+export function finalizeVerb(verb: Verb) {
+    if(typeof verb === "object" && verb.alax) {
+        let idx = [verb.verb].concat(verb.modifiers ?? []).indexOf(verb.alax[0]);
+        while(idx < Math.min(verb.alax.length, (verb.modifiers ?? []).length + 1) && [verb.verb].concat(verb.modifiers ?? [])[idx] === verb.alax[idx])
+            idx++;
+        for(let i = idx; i < verb.alax.length; i++) {
+            if(!verb.modifiers) verb.modifiers = [];
+            verb.modifiers.push(verb.alax[i]);
+        }
+        verb.alax = verb.alax.slice(0, idx);
+    }
     if(typeof verb === "object" && (!verb.modifiers || verb.modifiers.length === 0) && !verb.ala && (!verb.alax || verb.alax.length === 0)) return verb.verb;
     return verb;
 }
@@ -58,3 +78,6 @@ export function joinVerb(verb: Verb) {
 export function joinTime(time: Time) {
     return time.modifiers ? time.modifiers.join(" ") : "";
 }
+
+export const MAX_ITER = 100000;
+export class TimeoutError extends Error {};

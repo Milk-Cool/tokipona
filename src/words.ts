@@ -1,4 +1,5 @@
 import { nextSyllable } from "./syllables";
+import { MAX_ITER, TimeoutError } from "./utils";
 
 export const words = [
     "a", "akesi", "ala", "alasa", "ale", "ali", "anpa",
@@ -37,8 +38,9 @@ export function isValidWord(word: string) {
  */
 export function nextWord(text: string): [string, string, boolean] {
     const regexTmp = /^[^ptkmnslwjaeiou]*/i;
-    let textTmp = text.replace(regexTmp, ""), textPeek = "", valid = true, sep = false, syl = "", word = "";
+    let textTmp = text.replace(regexTmp, ""), textPeek = "", valid = true, sep = false, syl = "", word = "", iter = 0;
     while(true) {
+        if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a word");
         [syl, textTmp, valid, sep] = nextSyllable(textTmp);
         if(syl === "" || sep) return [word, text.replace(regexTmp, "").replace(word, "").replace(regexTmp, ""), isValidWord(word)];
         if(!valid) return ["", text, false];

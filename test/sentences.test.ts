@@ -116,7 +116,7 @@ test("correctly parses sentences with tenpo", () => {
     expect(res2.taso).toBeTruthy();
 });
 
-test("correctly parses sentences simple questions", () => {
+test("correctly parses simple questions", () => {
     const test1 = "tenpo ni la, sina moku ala moku e kili?";
     const [res1, _rem1, val1] = nextSentence(test1);
     testValidity(res1, val1, [true, true, true, true]);
@@ -129,4 +129,14 @@ test("correctly parses sentences simple questions", () => {
     const [res2, _rem2, val2] = nextSentence(test2);
     testValidity(res2, val2, [true, false, false]);
     expect(joinNoun(res2.object as Noun)).toBe("sina pona ala pona");
+});
+
+test("correctly parses complex sentences", () => {
+    const test1 = "tenpo kama suli la, sina moku ala moku e kili?";
+    const [res1, _rem1, val1] = nextSentence(test1);
+    testValidity(res1, val1, [true, true, true, true]);
+    expect(joinNoun(res1.object as Noun)).toBe("sina");
+    expect(joinVerb(res1.verb as Verb)).toBe("moku ala moku");
+    expect(joinNoun(res1.subject as Noun)).toBe("kili");
+    expect(joinTime(res1.time as Time)).toBe("kama suli");
 });
