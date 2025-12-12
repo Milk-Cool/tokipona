@@ -14,6 +14,19 @@ type SentenceParseState = "subject" | "verb" | "object";
 export function nextSentence(text: string): [Sentence, string, boolean] {
     const originalText = text, ret: Sentence = {};
     let noun: Noun, verb: Verb, word: string, valid: boolean, state: SentenceParseState = "object", tmpText: string;
+
+    [word, tmpText, valid] = nextWord(text);
+    if(word === "tenpo") {
+        // times
+        text = tmpText;
+        ret.time = { modifiers: [] };
+        while(true) {
+            [word, text, valid] = nextWord(text);
+            if(word === "la") break;
+            ret.time.modifiers.push(word);
+        }
+    }
+
     while(true) {
         if(state === "object") {
             [noun, text, valid] = nextNoun(text);

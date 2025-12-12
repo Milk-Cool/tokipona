@@ -1,12 +1,13 @@
 import { expect, test } from "vitest";
-import { nextSentence, Noun, Sentence, Verb } from "../src/index";
-import { joinNoun, joinVerb } from "../src/utils";
+import { nextSentence, Noun, Sentence, Time, Verb } from "../src/index";
+import { joinNoun, joinTime, joinVerb } from "../src/utils";
 
-const testValidity = (sent: Sentence, val: boolean, valExpected: [boolean, boolean, boolean]) => {
+const testValidity = (sent: Sentence, val: boolean, valExpected: [boolean, boolean, boolean, boolean?]) => {
     expect(val).toBeTruthy();
     if(valExpected[0]) expect(sent.object).toBeDefined();
     if(valExpected[1]) expect(sent.verb).toBeDefined();
     if(valExpected[2]) expect(sent.subject).toBeDefined();
+    if(valExpected[3]) expect(sent.time).toBeDefined();
 };
 
 test("correctly parses simple sentences (only object-verb-subject)", () => {
@@ -93,4 +94,22 @@ test("correctly parses sentences with preverbs", () => {
     expect(joinNoun(res3.object as Noun)).toBe("ona");
     expect(joinVerb(res3.verb as Verb)).toBe("ken toki");
     expect(joinNoun(res3.subject as Noun)).toBe("toki pona");
-})
+});
+
+test("correctly parses sentences with tenpo", () => {
+    const test1 = "tenpo ni la, mi open pali e tomo";
+    const [res1, _rem1, val1] = nextSentence(test1);
+    testValidity(res1, val1, [true, true, true, true]);
+    expect(joinNoun(res1.object as Noun)).toBe("mi");
+    expect(joinVerb(res1.verb as Verb)).toBe("open pali");
+    expect(joinNoun(res1.subject as Noun)).toBe("tomo");
+    expect(joinTime(res1.time as Time)).toBe("ni");
+
+    const test2 = "tenpo kama lili la, sina kama jo e lipu sona";
+    const [res2, _rem2, val2] = nextSentence(test2);
+    testValidity(res2, val2, [true, true, true, true]);
+    expect(joinNoun(res2.object as Noun)).toBe("sina");
+    expect(joinVerb(res2.verb as Verb)).toBe("kama jo");
+    expect(joinNoun(res2.subject as Noun)).toBe("lipu sona");
+    expect(joinTime(res2.time as Time)).toBe("kama lili");
+});

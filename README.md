@@ -20,4 +20,6 @@ A JS library for parsing, translating and constructing toki pona.
 - [ ] Parsing connected sentences
 - [ ] Parsing unofficial words (jan Pepe, ma México)
 - [x] pi
+- [ ] Parsing x ala x questions
+- [x] tenpo
 - [ ] Maybe more?

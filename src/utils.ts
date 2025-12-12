@@ -1,4 +1,4 @@
-import { Noun, Verb } from "./types";
+import { Noun, Time, Verb } from "./types";
 
 /**
  * Returns true when the pronoun does not need a "li" after it in sentences, false otherwise.
@@ -52,4 +52,7 @@ export function joinVerb(verb: Verb) {
     return typeof verb === "string"
     ? verb
     : [verb.verb].concat(verb.modifiers ?? []).join(" ") + (verb.ala ? " ala" : "");
+}
+export function joinTime(time: Time) {
+    return time.modifiers ? time.modifiers.join(" ") : "";
 }
