@@ -7,4 +7,5 @@ export type Sentence = {
     verb?: Verb,
     subject?: Noun,
     time?: Time,
+    taso?: boolean,
 };

@@ -16,6 +16,13 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
     let noun: Noun, verb: Verb, word: string, valid: boolean, state: SentenceParseState = "object", tmpText: string;
 
     [word, tmpText, valid] = nextWord(text);
+    if(word === "taso") {
+        // but
+        text = tmpText;
+        ret.taso = true;
+    }
+
+    [word, tmpText, valid] = nextWord(text);
     if(word === "tenpo") {
         // times
         text = tmpText;

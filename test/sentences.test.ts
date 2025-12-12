@@ -105,11 +105,13 @@ test("correctly parses sentences with tenpo", () => {
     expect(joinNoun(res1.subject as Noun)).toBe("tomo");
     expect(joinTime(res1.time as Time)).toBe("ni");
 
-    const test2 = "tenpo kama lili la, sina kama jo e lipu sona";
+    // also checking taso here because i'm too lazy to create a separate test for this
+    const test2 = "taso, tenpo kama lili la, sina kama jo e lipu sona";
     const [res2, _rem2, val2] = nextSentence(test2);
     testValidity(res2, val2, [true, true, true, true]);
     expect(joinNoun(res2.object as Noun)).toBe("sina");
     expect(joinVerb(res2.verb as Verb)).toBe("kama jo");
     expect(joinNoun(res2.subject as Noun)).toBe("lipu sona");
     expect(joinTime(res2.time as Time)).toBe("kama lili");
+    expect(res2.taso).toBeTruthy();
 });
