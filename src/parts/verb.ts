@@ -5,18 +5,19 @@ import { isVerbTerminator, finalizeVerb, MAX_ITER, TimeoutError } from "../utils
 /**
  * Gets the next verb in text.
  * @param text Text to get the verb from
- * @returns [verb, remaining text, is valid]
+ * @returns [verb, remaining text, is valid, is last in sentence]
  */
-export function nextVerb(text: string): [Verb, string, boolean] {
+export function nextVerb(text: string): [Verb, string, boolean, boolean] {
     const originalText = text;
-    let ret: Verb = { verb: "" }, word: string, valid: boolean, tmpText: string, isAlax: boolean = false, iter = 0;
+    let ret: Verb = { verb: "" }, word: string, valid: boolean, tmpText: string, isAlax: boolean = false, iter = 0, isLast: boolean = false;
     while(true) {
+        if(isLast) return [finalizeVerb(ret), text, true, true];
         if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a verb");
-        [word, tmpText, valid] = nextWord(text);
-        if(word === "") return [finalizeVerb(ret), text, true];
-        if(!valid) return ["", originalText, false];
+        [word, tmpText, valid, isLast] = nextWord(text);
+        if(word === "") return [finalizeVerb(ret), text, true, true];
+        if(!valid) return ["", originalText, false, false];
 
-        if(isVerbTerminator(word)) return [finalizeVerb(ret), text, true];
+        if(isVerbTerminator(word)) return [finalizeVerb(ret), text, true, false];
         
         text = tmpText;
 

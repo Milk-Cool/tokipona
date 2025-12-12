@@ -34,16 +34,19 @@ export function isValidWord(word: string) {
 /**
  * Gets the next toki pona word from the given text.
  * @param text The text to get the next word from
- * @returns [word, remaining text, is word valid]
+ * @returns [word, remaining text, is word valid, is last in sentence]
  */
-export function nextWord(text: string): [string, string, boolean] {
+export function nextWord(text: string): [string, string, boolean, boolean] {
     const regexTmp = /^[^ptkmnslwjaeiou]*/i;
-    let textTmp = text.replace(regexTmp, ""), textPeek = "", valid = true, sep = false, syl = "", word = "", iter = 0;
+    let textTmp = text.replace(regexTmp, ""), textPeek = "", valid = true, sep = false, syl = "", word = "", iter = 0, isLast: boolean;
     while(true) {
         if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a word");
-        [syl, textTmp, valid, sep] = nextSyllable(textTmp);
-        if(syl === "" || sep) return [word, text.replace(regexTmp, "").replace(word, "").replace(regexTmp, ""), isValidWord(word)];
-        if(!valid) return ["", text, false];
+        [syl, textTmp, valid, sep, isLast] = nextSyllable(textTmp);
+        if(syl === "" || sep) {
+            text = text.replace(regexTmp, "").replace(word, "").replace(regexTmp, "");
+            return [word, text, isValidWord(word), text === "" || isLast];
+        }
+        if(!valid) return ["", text, false, false];
         word += syl;
     }
 }

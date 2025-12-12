@@ -5,24 +5,25 @@ import { isNounTerminator, isSpecialPronoun, isVerbTerminator, finalizeNoun, isV
 /**
  * Gets the next noun in text. May also be used to get the next pronoun.
  * @param text Text to get the noun/pronoun from
- * @returns [noun/pronoun, remaining text, is valid]
+ * @returns [noun/pronoun, remaining text, is valid, is last in sentence]
  */
-export function nextNoun(text: string): [Noun, string, boolean] {
+export function nextNoun(text: string): [Noun, string, boolean, boolean] {
     const originalText = text;
-    let ret: Noun = { noun: "" }, word: string, valid: boolean, tmpText: string, isAlax: boolean = false, iter = 0;
+    let ret: Noun = { noun: "" }, word: string, valid: boolean, tmpText: string, isAlax: boolean = false, iter = 0, isLast: boolean = false;
     while(true) {
+        if(isLast) return [finalizeNoun(ret), text, true, true];
         if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a noun");
-        [word, tmpText, valid] = nextWord(text);
-        if(word === "") return [finalizeNoun(ret), text, true];
-        if(!valid) return ["", originalText, false];
+        [word, tmpText, valid, isLast] = nextWord(text);
+        if(word === "") return [finalizeNoun(ret), text, true, true];
+        if(!valid) return ["", originalText, false, false];
 
         if(word === "pi") {
-            if(ret.noun === "") return ["", originalText, false];
+            if(ret.noun === "") return ["", originalText, false, false];
             text = tmpText;
-            const [pi, piRem, piValid] = nextNoun(text);
-            if(!piValid) return ["", originalText, false];
+            const [pi, piRem, piValid, isLastLocal] = nextNoun(text);
+            if(!piValid) return ["", originalText, false, false];
             ret.pi = pi;
-            return [finalizeNoun(ret), piRem, true];
+            return [finalizeNoun(ret), piRem, true, isLastLocal];
         }
 
         if(isSpecialPronoun(ret.noun) && isVerbTerminator(word)) {
@@ -33,9 +34,9 @@ export function nextNoun(text: string): [Noun, string, boolean] {
             while(ret.modifiers && ret.modifiers.length > idx && (isVerbModifier(ret.modifiers.at(-1)) || oidx !== -1))
                 text = ret.modifiers.splice(-1, 1)[0] + " " + text;
             if(ret.modifiers && ret.modifiers.length > idx) text = ret.modifiers.splice(-1, 1)[0] + " " + text; // do not touch the noun itself as there would be no noun
-            return [finalizeNoun(ret), text, true];
+            return [finalizeNoun(ret), text, true, false];
         }
-        if(isNounTerminator(word)) return [finalizeNoun(ret), text, true];
+        if(isNounTerminator(word)) return [finalizeNoun(ret), text, true, false];
         
         text = tmpText;
 

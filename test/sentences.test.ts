@@ -140,3 +140,21 @@ test("correctly parses complex sentences", () => {
     expect(joinNoun(res1.subject as Noun)).toBe("kili");
     expect(joinTime(res1.time as Time)).toBe("kama suli");
 });
+
+test("correctly parses multiple sentences", () => {
+    let test1 = "jan seme li pakala e ona? jan lili li pakala e ona. jan lili li ike!", res1: Sentence, val1: boolean;
+    [res1, test1, val1] = nextSentence(test1);
+    testValidity(res1, val1, [true, true, true]);
+    expect(joinNoun(res1.object as Noun)).toBe("jan seme");
+    expect(joinVerb(res1.verb as Verb)).toBe("pakala");
+    expect(joinNoun(res1.subject as Noun)).toBe("ona");
+    [res1, test1, val1] = nextSentence(test1);
+    testValidity(res1, val1, [true, true, true]);
+    expect(joinNoun(res1.object as Noun)).toBe("jan lili");
+    expect(joinVerb(res1.verb as Verb)).toBe("pakala");
+    expect(joinNoun(res1.subject as Noun)).toBe("ona");
+    [res1, test1, val1] = nextSentence(test1);
+    testValidity(res1, val1, [true, true, false]);
+    expect(joinNoun(res1.object as Noun)).toBe("jan lili");
+    expect(joinVerb(res1.verb as Verb)).toBe("ike");
+});

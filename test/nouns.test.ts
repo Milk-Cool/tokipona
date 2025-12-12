@@ -60,3 +60,18 @@ test("correctly parses question nouns (x ala x)", () => {
         expect(joinNoun(noun)).toBe(v);
     }
 });
+
+test("correctly parses nouns with sentence separators", () => {
+    const tests: Record<string, [boolean, string]> = {
+        "jan. pona": [true, "jan"],
+        "jan pona": [true, "jan pona"],
+        "jan pona li": [false, "jan pona"],
+    }
+    for(const k in tests) {
+        const v = tests[k];
+        const [noun, _rest, valid, last] = nextNoun(k);
+        expect(valid).toBeTruthy();
+        expect(last).toBe(v[0]);
+        expect(joinNoun(noun)).toBe(v[1]);
+    }
+});

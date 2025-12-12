@@ -30,3 +30,18 @@ test("correctly parses question verbs (x ala x)", () => {
         expect(joinVerb(verb)).toBe(v);
     }
 });
+
+test("correctly parses verbs with sentence separators", () => {
+    const tests: Record<string, [boolean, string]> = {
+        "toki. lili": [true, "toki"],
+        "toki lili": [true, "toki lili"],
+        "toki lili e toki pona": [false, "toki lili"],
+    }
+    for(const k in tests) {
+        const v = tests[k];
+        const [verb, _rest, valid, last] = nextVerb(k);
+        expect(valid).toBeTruthy();
+        expect(joinVerb(verb)).toBe(v[1]);
+        expect(last).toBe(v[0]);
+    }
+});

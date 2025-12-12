@@ -13,7 +13,7 @@ type SentenceParseState = "subject" | "verb" | "object";
  */
 export function nextSentence(text: string): [Sentence, string, boolean] {
     const originalText = text, ret: Sentence = {};
-    let noun: Noun, verb: Verb, word: string, valid: boolean, state: SentenceParseState = "object", tmpText: string, iter = 0;
+    let noun: Noun, verb: Verb, word: string, valid: boolean, state: SentenceParseState = "object", tmpText: string, iter = 0, isLast: boolean = false;
 
     [word, tmpText, valid] = nextWord(text);
     if(word === "taso") {
@@ -36,9 +36,10 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
     }
 
     while(true) {
+        if(isLast) return [ret, text, true];
         if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a sentence");
         if(state === "object") {
-            [noun, text, valid] = nextNoun(text);
+            [noun, text, valid, isLast] = nextNoun(text);
             if(noun === "") return [ret, text, true];
             if(!valid) return [{}, originalText, false];
             ret.object = noun;
@@ -54,7 +55,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
             }
         } else if(state === "verb") {
             // checking for simple nouns
-            [word, tmpText, valid] = nextWord(text);
+            [word, tmpText, valid, isLast] = nextWord(text);
             if(word === "") return [ret, text, true];
             if(!valid) return [{}, originalText, false];
             if(isSimpleVerb(word)) {
@@ -87,7 +88,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
             }
             state = "subject";
         } else if(state === "subject") {
-            [noun, text, valid] = nextNoun(text);
+            [noun, text, valid, isLast] = nextNoun(text);
             if(noun === "") return [ret, text, true];
             if(!valid) return [{}, originalText, false];
             ret.subject = noun;
