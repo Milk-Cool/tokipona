@@ -27,8 +27,8 @@ export function nextNoun(text: string): [Noun, string, boolean] {
         if(isSpecialPronoun(ret.noun) && isVerbTerminator(word)) {
             const oidx = ret.modifiers ? ret.modifiers.findIndex(x => isPreverb(x)) : -1;
             const idx = ret.modifiers && oidx !== -1 ? oidx : 0;
-            if(ret.alax) text = "ala " + ret.alax.join(" ") + " " + text;
-            if(ret.ala) text = "ala " + text;
+            if(ret.alax) { text = "ala " + ret.alax.join(" ") + " " + text; delete ret.alax; }
+            if(ret.ala) { text = "ala " + text; delete ret.ala; }
             while(ret.modifiers && ret.modifiers.length > idx && (isVerbModifier(ret.modifiers.at(-1)) || oidx !== -1))
                 text = ret.modifiers.splice(-1, 1)[0] + " " + text;
             if(ret.modifiers && ret.modifiers.length > idx) text = ret.modifiers.splice(-1, 1)[0] + " " + text; // do not touch the noun itself as there would be no noun

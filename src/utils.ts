@@ -35,11 +35,11 @@ export function isPreverb(word: string) {
 }
 
 export function minimizeNoun(noun: Noun) {
-    if(typeof noun === "object" && noun.modifiers?.length === 0) return noun.noun;
+    if(typeof noun === "object" && (!noun.modifiers || noun.modifiers.length === 0) && !noun.ala && (!noun.alax || noun.alax.length === 0) && !noun.pi) return noun.noun;
     return noun;
 }
 export function minimizeVerb(verb: Verb) {
-    if(typeof verb === "object" && verb.modifiers?.length === 0) return verb.verb;
+    if(typeof verb === "object" && (!verb.modifiers || verb.modifiers.length === 0) && !verb.ala && (!verb.alax || verb.alax.length === 0)) return verb.verb;
     return verb;
 }
 
