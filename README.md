@@ -18,7 +18,7 @@ A JS library for parsing, translating and constructing toki pona.
 - [x] Parsing ala's
 - [x] Parsing preverbs
 - [x] Parsing multiple sentences
-- [ ] Parsing connected sentences
+- [x] Parsing connected sentences (sentence la, sentence)
 - [ ] Parsing unofficial words (jan Pepe, ma Mesiko)
 - [x] pi
 - [x] Parsing x ala x questions

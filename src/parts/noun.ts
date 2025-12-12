@@ -14,7 +14,7 @@ export function nextNoun(text: string): [Noun, string, boolean, boolean] {
         if(isLast) return [finalizeNoun(ret), text, true, true];
         if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a noun");
         [word, tmpText, valid, isLast] = nextWord(text);
-        if(word === "") return [finalizeNoun(ret), text, true, true];
+        if(word === "" || word === "la") return [finalizeNoun(ret), text, true, word === ""];
         if(!valid) return ["", originalText, false, false];
 
         if(word === "pi") {

@@ -8,4 +8,5 @@ export type Sentence = {
     subject?: Noun,
     time?: Time,
     taso?: boolean,
+    la?: Sentence,
 };

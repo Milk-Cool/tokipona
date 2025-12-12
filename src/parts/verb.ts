@@ -14,7 +14,7 @@ export function nextVerb(text: string): [Verb, string, boolean, boolean] {
         if(isLast) return [finalizeVerb(ret), text, true, true];
         if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a verb");
         [word, tmpText, valid, isLast] = nextWord(text);
-        if(word === "") return [finalizeVerb(ret), text, true, true];
+        if(word === "" || word === "la") return [finalizeVerb(ret), text, true, word === ""];
         if(!valid) return ["", originalText, false, false];
 
         if(isVerbTerminator(word)) return [finalizeVerb(ret), text, true, false];

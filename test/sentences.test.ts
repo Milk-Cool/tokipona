@@ -2,12 +2,13 @@ import { expect, test } from "vitest";
 import { nextSentence, Noun, Sentence, Time, Verb } from "../src/index";
 import { joinNoun, joinTime, joinVerb } from "../src/utils";
 
-const testValidity = (sent: Sentence, val: boolean, valExpected: [boolean, boolean, boolean, boolean?]) => {
+const testValidity = (sent: Sentence, val: boolean, valExpected: [boolean, boolean, boolean, boolean?, boolean?]) => {
     expect(val).toBeTruthy();
     if(valExpected[0]) expect(sent.object).toBeDefined();
     if(valExpected[1]) expect(sent.verb).toBeDefined();
     if(valExpected[2]) expect(sent.subject).toBeDefined();
     if(valExpected[3]) expect(sent.time).toBeDefined();
+    if(valExpected[4]) expect(sent.la).toBeDefined();
 };
 
 test("correctly parses simple sentences (only object-verb-subject)", () => {
@@ -157,4 +158,28 @@ test("correctly parses multiple sentences", () => {
     testValidity(res1, val1, [true, true, false]);
     expect(joinNoun(res1.object as Noun)).toBe("jan lili");
     expect(joinVerb(res1.verb as Verb)).toBe("ike");
+});
+
+test("correctly parses complex sentences (sentence la sentence)", () => {
+    const test1 = "tenpo ni la, mi moku e kili la, mi pilin pona la, mi pilin ike ala";
+    const [res1, _rem1, val1] = nextSentence(test1);
+    testValidity(res1, val1, [true, true, true, true, true]);
+    testValidity(res1.la as Sentence, val1, [true, false, false, false, true]);
+    testValidity((res1.la as Sentence).la as Sentence, val1, [true, false, false]);
+    expect(joinNoun(res1.object as Noun)).toBe("mi");
+    expect(joinVerb(res1.verb as Verb)).toBe("moku");
+    expect(joinNoun(res1.subject as Noun)).toBe("kili");
+    expect(joinTime(res1.time as Time)).toBe("ni");
+    expect(joinNoun((res1.la as Sentence).object as Noun)).toBe("mi pilin pona");
+    expect(joinNoun(((res1.la as Sentence).la as Sentence).object as Noun)).toBe("mi pilin ike ala");
+
+    const test2 = "jan lili li pona la, jan lili li wile moku e moku";
+    const [res2, _rem2, val2] = nextSentence(test2);
+    testValidity(res2, val2, [true, true, false, false, true]);
+    testValidity(res2.la as Sentence, val2, [true, true, true]);
+    expect(joinNoun(res2.object as Noun)).toBe("jan lili");
+    expect(joinVerb(res2.verb as Verb)).toBe("pona");
+    expect(joinNoun((res2.la as Sentence).object as Noun)).toBe("jan lili");
+    expect(joinVerb((res2.la as Sentence).verb as Verb)).toBe("wile moku");
+    expect(joinNoun((res2.la as Sentence).subject as Noun)).toBe("moku");
 });

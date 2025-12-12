@@ -4,7 +4,7 @@ import { isNounTerminator, isSimpleVerb, isVerbModifier, isVerbTerminator, MAX_I
 import { nextNoun } from "./parts/noun";
 import { nextVerb } from "./parts/verb";
 
-type SentenceParseState = "subject" | "verb" | "object";
+type SentenceParseState = "subject" | "verb" | "object" | "done";
 
 /**
  * Parses the next sentence into a Sentence object and the remaining text.
@@ -12,7 +12,7 @@ type SentenceParseState = "subject" | "verb" | "object";
  * @returns [sentence, remaining text, is valid]
  */
 export function nextSentence(text: string): [Sentence, string, boolean] {
-    const originalText = text, ret: Sentence = {};
+    const originalText = text, ret: Sentence = {}, err = new TimeoutError("Max iterations reached while parsing a sentence");
     let noun: Noun, verb: Verb, word: string, valid: boolean, state: SentenceParseState = "object", tmpText: string, iter = 0, isLast: boolean = false;
 
     [word, tmpText, valid] = nextWord(text);
@@ -28,7 +28,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
         text = tmpText;
         ret.time = { modifiers: [] };
         while(true) {
-            if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a sentence");
+            if(++iter > MAX_ITER) throw err;
             [word, text, valid] = nextWord(text);
             if(word === "la") break;
             ret.time.modifiers.push(word);
@@ -37,7 +37,18 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
 
     while(true) {
         if(isLast) return [ret, text, true];
-        if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a sentence");
+        if(++iter > MAX_ITER) throw err;
+
+        [word, tmpText, valid, isLast] = nextWord(text);
+        if(word === "") return [ret, text, true];
+        if(!valid) return [{}, originalText, false];
+        if(word === "la") {
+            text = tmpText;
+            [ret.la, text, valid] = nextSentence(text);
+            if(!valid) return [{}, originalText, false];
+            return [ret, text, true];
+        }
+
         if(state === "object") {
             [noun, text, valid, isLast] = nextNoun(text);
             if(noun === "") return [ret, text, true];
@@ -46,7 +57,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
             state = "verb";
 
             while(true) {
-                if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a sentence");
+                if(++iter > MAX_ITER) throw err;
                 [word, tmpText, valid] = nextWord(text);
                 if(word === "") return [ret, text, true];
                 if(!valid) return [{}, originalText, false];
@@ -55,14 +66,11 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
             }
         } else if(state === "verb") {
             // checking for simple nouns
-            [word, tmpText, valid, isLast] = nextWord(text);
-            if(word === "") return [ret, text, true];
-            if(!valid) return [{}, originalText, false];
             if(isSimpleVerb(word)) {
                 text = tmpText;
                 ret.verb = { verb: word };
                 while(true) {
-                    if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a sentence");
+                    if(++iter > MAX_ITER) throw err;
                     [word, tmpText, valid] = nextWord(text);
                     if(word === "") return [ret, text, true];
                     if(!valid) return [{}, originalText, false];
@@ -78,7 +86,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
                 ret.verb = verb;
 
                 while(true) {
-                    if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a sentence");
+                    if(++iter > MAX_ITER) throw err;
                     [word, tmpText, valid] = nextWord(text);
                     if(word === "") return [ret, text, true];
                     if(!valid) return [{}, originalText, false];
@@ -92,6 +100,17 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
             if(noun === "") return [ret, text, true];
             if(!valid) return [{}, originalText, false];
             ret.subject = noun;
+            state = "done";
+
+            while(true) {
+                if(++iter > MAX_ITER) throw err;
+                [word, tmpText, valid] = nextWord(text);
+                if(word === "") return [ret, text, true];
+                if(!valid) return [{}, originalText, false];
+                if(!isNounTerminator(word)) break;
+                text = tmpText;
+            }
+        } else if(state === "done") {
             return [ret, text, true];
         }
     }
