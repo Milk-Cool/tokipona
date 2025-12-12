@@ -24,4 +24,5 @@ A JS library for parsing, translating and constructing toki pona.
 - [x] taso
 - [x] tenpo
 - [ ] o
+- [ ] potentially more sentences with la in them
 - [ ] Maybe more?
