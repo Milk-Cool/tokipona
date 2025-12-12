@@ -23,8 +23,14 @@ export function isSimpleVerb(word: string) {
 // same here
 export function isVerbModifier(word: string) {
     return [
-        "ala", "ante", "lili", "meso", "open", "sama",
+        "ante", "lili", "meso", "open", "sama",
         "suli", "taso", "tawa"
+    ].includes(word);
+}
+export function isPreverb(word: string) {
+    return [
+        "alasa", "awen", "kama", "ken", "lukin",
+        "open", "pini", "sona", "wile"
     ].includes(word);
 }
 

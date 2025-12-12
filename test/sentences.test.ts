@@ -2,14 +2,14 @@ import { expect, test } from "vitest";
 import { nextSentence, Noun, Sentence, Verb } from "../src/index";
 import { joinNoun, joinVerb } from "../src/utils";
 
-test("correctly parses simple sentences (only object-verb-subject)", () => {
-    const testValidity = (sent: Sentence, val: boolean, valExpected: [boolean, boolean, boolean]) => {
-        expect(val).toBeTruthy();
-        if(valExpected[0]) expect(sent.object).toBeDefined();
-        if(valExpected[1]) expect(sent.verb).toBeDefined();
-        if(valExpected[2]) expect(sent.subject).toBeDefined();
-    };
+const testValidity = (sent: Sentence, val: boolean, valExpected: [boolean, boolean, boolean]) => {
+    expect(val).toBeTruthy();
+    if(valExpected[0]) expect(sent.object).toBeDefined();
+    if(valExpected[1]) expect(sent.verb).toBeDefined();
+    if(valExpected[2]) expect(sent.subject).toBeDefined();
+};
 
+test("correctly parses simple sentences (only object-verb-subject)", () => {
     const test1 = "mi pona!";
     const [res1, _rem1, val1] = nextSentence(test1);
     testValidity(res1, val1, [true, false, false]);
@@ -71,3 +71,26 @@ test("correctly parses simple sentences (only object-verb-subject)", () => {
     expect(joinVerb(res10.verb as Verb)).toBe("toki ala");
     expect(joinNoun(res10.subject as Noun)).toBe("toki pona");
 });
+
+test("correctly parses sentences with preverbs", () => {
+    const test1 = "mi open pali e tomo";
+    const [res1, _rem1, val1] = nextSentence(test1);
+    testValidity(res1, val1, [true, true, true]);
+    expect(joinNoun(res1.object as Noun)).toBe("mi");
+    expect(joinVerb(res1.verb as Verb)).toBe("open pali");
+    expect(joinNoun(res1.subject as Noun)).toBe("tomo");
+
+    const test2 = "sina kama jo e lipu sona";
+    const [res2, _rem2, val2] = nextSentence(test2);
+    testValidity(res2, val2, [true, true, true]);
+    expect(joinNoun(res2.object as Noun)).toBe("sina");
+    expect(joinVerb(res2.verb as Verb)).toBe("kama jo");
+    expect(joinNoun(res2.subject as Noun)).toBe("lipu sona");
+
+    const test3 = "ona li ken toki e toki pona";
+    const [res3, _rem3, val3] = nextSentence(test3);
+    testValidity(res3, val3, [true, true, true]);
+    expect(joinNoun(res3.object as Noun)).toBe("ona");
+    expect(joinVerb(res3.verb as Verb)).toBe("ken toki");
+    expect(joinNoun(res3.subject as Noun)).toBe("toki pona");
+})
