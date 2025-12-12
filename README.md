@@ -21,6 +21,6 @@ A JS library for parsing, translating and constructing toki pona.
 - [ ] Parsing unofficial words (jan Pepe, ma Mesiko)
 - [x] pi
 - [ ] Parsing x ala x questions
-- [ ] taso
+- [x] taso
 - [x] tenpo
 - [ ] Maybe more?
