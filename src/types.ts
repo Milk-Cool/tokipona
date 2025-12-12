@@ -1,6 +1,6 @@
 export type Time = { modifiers?: string[] };
-export type Noun = string | { noun: string, modifiers?: string[], ala?: boolean, pi?: Noun };
-export type Verb = string | { verb: string, modifiers?: string[], ala?: boolean };
+export type Noun = string | { noun: string, modifiers?: string[], ala?: boolean, pi?: Noun, alax?: string[] };
+export type Verb = string | { verb: string, modifiers?: string[], ala?: boolean, alax?: string[] };
 
 export type Sentence = {
     object?: Noun,

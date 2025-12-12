@@ -115,3 +115,18 @@ test("correctly parses sentences with tenpo", () => {
     expect(joinTime(res2.time as Time)).toBe("kama lili");
     expect(res2.taso).toBeTruthy();
 });
+
+test("correctly parses sentences simple questions", () => {
+    const test1 = "tenpo ni la, sina moku ala moku e kili?";
+    const [res1, _rem1, val1] = nextSentence(test1);
+    testValidity(res1, val1, [true, true, true, true]);
+    expect(joinNoun(res1.object as Noun)).toBe("sina");
+    expect(joinVerb(res1.verb as Verb)).toBe("moku ala moku");
+    expect(joinNoun(res1.subject as Noun)).toBe("kili");
+    expect(joinTime(res1.time as Time)).toBe("ni");
+
+    const test2 = "sina pona ala pona?";
+    const [res2, _rem2, val2] = nextSentence(test2);
+    testValidity(res2, val2, [true, false, false]);
+    expect(joinNoun(res2.object as Noun)).toBe("sina pona ala pona");
+});

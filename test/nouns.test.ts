@@ -47,3 +47,16 @@ test("correctly parses negative nouns (ala's)", () => {
         expect(joinNoun(noun)).toBe(v);
     }
 });
+
+test("correctly parses question nouns (x ala x)", () => {
+    const tests: Record<string, string> = {
+        "jan ala jan": "jan ala jan",
+        "toki ala toki": "toki ala toki"
+    }
+    for(const k in tests) {
+        const v = tests[k];
+        const [noun, _rest, valid] = nextNoun(k);
+        expect(valid).toBeTruthy();
+        expect(joinNoun(noun)).toBe(v);
+    }
+});

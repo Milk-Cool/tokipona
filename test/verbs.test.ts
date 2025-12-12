@@ -17,3 +17,16 @@ test("correctly parses verbs from text", () => {
         expect(joinVerb(verb)).toBe(v);
     }
 });
+
+test("correctly parses question verbs (x ala x)", () => {
+    const tests: Record<string, string> = {
+        "toki ala toki e toki pona": "toki ala toki",
+        "nasa ala nasa": "nasa ala nasa"
+    }
+    for(const k in tests) {
+        const v = tests[k];
+        const [verb, _rest, valid] = nextVerb(k);
+        expect(valid).toBeTruthy();
+        expect(joinVerb(verb)).toBe(v);
+    }
+});

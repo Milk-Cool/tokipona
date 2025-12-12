@@ -8,7 +8,7 @@ export function isSpecialPronoun(word: string) {
 }
 
 export function isNounTerminator(word: string) {
-    return word === "li";
+    return word === "li" || word === "e";
 }
 export function isVerbTerminator(word: string) {
     return word === "e";
@@ -46,12 +46,14 @@ export function minimizeVerb(verb: Verb) {
 export function joinNoun(noun: Noun) {
     return typeof noun === "string"
     ? noun
-    : [noun.noun].concat(noun.modifiers ?? []).join(" ") + (noun.ala ? " ala" : "") + (noun.pi ? " pi " + joinNoun(noun.pi) : "");
+    : [noun.noun].concat(noun.modifiers ?? []).join(" ") + (noun.ala ? " ala" : "") + (noun.pi ? " pi " + joinNoun(noun.pi) : "")
+    + (noun.alax ? " ala " + noun.alax.join(" ") : "");
 }
 export function joinVerb(verb: Verb) {
     return typeof verb === "string"
     ? verb
-    : [verb.verb].concat(verb.modifiers ?? []).join(" ") + (verb.ala ? " ala" : "");
+    : [verb.verb].concat(verb.modifiers ?? []).join(" ") + (verb.ala ? " ala" : "")
+    + (verb.alax ? " ala " + verb.alax.join(" ") : "");
 }
 export function joinTime(time: Time) {
     return time.modifiers ? time.modifiers.join(" ") : "";
