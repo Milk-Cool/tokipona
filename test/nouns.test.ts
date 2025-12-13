@@ -78,9 +78,9 @@ test("correctly parses nouns with sentence separators", () => {
 
 test("correctly parses nouns with o", () => {
     const tests: Record<string, string> = {
-        "jan lili o!": "jan lili",
-        "jan Pepe o!": "jan Pepe",
-        "mama meli o, sina pali mute mute!": "mama meli"
+        "jan lili o!": "jan lili o",
+        "jan Pepe o!": "jan Pepe o",
+        "mama meli o, sina pali mute mute!": "mama meli o"
     }
     for(const k in tests) {
         const v = tests[k];

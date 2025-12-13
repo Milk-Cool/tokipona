@@ -67,7 +67,7 @@ export function joinNoun(noun: Noun) {
     return typeof noun === "string"
     ? noun
     : [noun.noun].concat(noun.modifiers ?? []).join(" ") + (noun.ala ? " ala" : "") + (noun.pi ? " pi " + joinNoun(noun.pi) : "")
-    + (noun.alax ? " ala " + noun.alax.join(" ") : "");
+    + (noun.alax ? " ala " + noun.alax.join(" ") : "") + (noun.o ? " o" : "");
 }
 export function joinVerb(verb: Verb) {
     return typeof verb === "string"
