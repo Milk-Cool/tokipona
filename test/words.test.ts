@@ -18,7 +18,7 @@ test("correctly identifies valid words", () => {
 });
 
 test("correctly parses words from text", () => {
-    let text = "mi toki e toki pona! sina toki ala e toki pona.", word = "", valid = true;
+    let text = "mi toki e toki pona! jan Wata toki ala e toki pona.", word = "", valid = true;
 
     const checkOne = (expected: string) => {
         [word, text, valid] = nextWord(text);
@@ -32,7 +32,8 @@ test("correctly parses words from text", () => {
     checkOne("toki");
     checkOne("pona");
 
-    checkOne("sina");
+    checkOne("jan");
+    checkOne("Wata");
     checkOne("toki");
     checkOne("ala");
     checkOne("e");
