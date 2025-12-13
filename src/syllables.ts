@@ -18,7 +18,7 @@ export function nextSyllable(text: string): [string, string, boolean, boolean, b
     if(!syl) return ["", text, false, false, false, false];
     text = text.replace(syl, ""); // only the first occurence
     const hasSeparator = " !&();:'\",.?-".split("").map(x => syl.includes(x)).includes(true);
-    const hasStop = "!;:,.?".split("").map(x => syl.includes(x)).includes(true);
+    const hasStop = "!;:.?".split("").map(x => syl.includes(x)).includes(true);
     const hasColon = syl.includes(":");
     syl = syl.replace(/^[^ptkmnslwjaeiou]*/i, "");
     return [syl, text, isValidSyllable(syl), hasSeparator, hasStop, hasColon];
