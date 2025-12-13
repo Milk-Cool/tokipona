@@ -17,6 +17,12 @@ export function nextNoun(text: string): [Noun, string, boolean, boolean] {
         if(word === "" || word === "la") return [finalizeNoun(ret), text, true, word === ""];
         if(!valid) return ["", originalText, false, false];
 
+        if(word === "o") {
+            ret.o = true;
+            text = tmpText;
+            return [finalizeNoun(ret), text, true, isLast];
+        }
+
         if(word === "pi") {
             if(ret.noun === "") return ["", originalText, false, false];
             text = tmpText;

@@ -75,3 +75,20 @@ test("correctly parses nouns with sentence separators", () => {
         expect(joinNoun(noun)).toBe(v[1]);
     }
 });
+
+test("correctly parses nouns with o", () => {
+    const tests: Record<string, string> = {
+        "jan lili o!": "jan lili",
+        "jan Pepe o!": "jan Pepe",
+        "mama meli o, sina pali mute mute!": "mama meli"
+    }
+    for(const k in tests) {
+        const v = tests[k];
+        const [noun, _rest, valid] = nextNoun(k);
+        expect(valid).toBeTruthy();
+        expect(typeof noun).toBe("object");
+        if(typeof noun === "string") return;
+        expect(noun.o).toBe(true);
+        expect(joinNoun(noun)).toBe(v);
+    }
+});

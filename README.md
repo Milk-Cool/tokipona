@@ -24,7 +24,7 @@ A JS library for parsing, translating and constructing toki pona.
 - [x] Parsing x ala x questions
 - [x] taso
 - [x] tenpo
-- [ ] o
+- [x] o
 - [ ] potentially more sentences with la in them
 - [ ] Interjections
 - [ ] tan
