@@ -31,5 +31,5 @@ A JS library for parsing, translating and constructing toki pona.
 - [ ] potentially more sentences with la in them
 - [ ] Interjections
 - [ ] tan
-- [ ] latin toki pona <-> sitelen pona (Under-ConScript Unicode Registry, UCSUR)
+- [ ] latin toki pona <-> sitelen pona (Under-ConScript Unicode Registry, UCSUR) <-> sitelen emoji
 - [ ] Maybe more?
