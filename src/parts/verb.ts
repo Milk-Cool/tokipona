@@ -10,6 +10,14 @@ import { isVerbTerminator, finalizeVerb, MAX_ITER, TimeoutError } from "../utils
 export function nextVerb(text: string): [Verb, string, boolean, boolean] {
     const originalText = text;
     let ret: Verb = { verb: "" }, word: string, valid: boolean, tmpText: string, isAlax: boolean = false, iter = 0, isLast: boolean = false;
+
+    [word, tmpText, valid] = nextWord(text);
+    if(!valid) return ["", originalText, false, false];
+    if(word === "o") {
+        ret.o = true;
+        text = tmpText;
+    }
+
     while(true) {
         if(isLast) return [finalizeVerb(ret), text, true, true];
         if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a verb");

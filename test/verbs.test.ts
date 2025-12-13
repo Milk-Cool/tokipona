@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { nextVerb } from "../src/index";
+import { nextVerb, Verb } from "../src/index";
 import { joinVerb } from "../src/utils";
 
 test("correctly parses verbs from text", () => {
@@ -43,5 +43,20 @@ test("correctly parses verbs with sentence separators", () => {
         expect(valid).toBeTruthy();
         expect(joinVerb(verb)).toBe(v[1]);
         expect(last).toBe(v[0]);
+    }
+});
+
+test("correctly parses verbs with o", () => {
+    const tests: Record<string, string> = {
+        "o toki": "o toki",
+        "o sitelen e sitelen!": "o sitelen"
+    }
+    for(const k in tests) {
+        const v = tests[k];
+        const [verb, _rest, valid] = nextVerb(k);
+        expect(valid).toBeTruthy();
+        expect(joinVerb(verb)).toBe(v);
+        expect(typeof verb).toBe("object");
+        expect((verb as Verb & object).o).toBeTruthy();
     }
 });

@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { nextNoun } from "../src/index";
+import { nextNoun, Noun } from "../src/index";
 import { joinNoun } from "../src/utils";
 
 test("correctly parses nouns from text", () => {
@@ -87,8 +87,7 @@ test("correctly parses nouns with o", () => {
         const [noun, _rest, valid] = nextNoun(k);
         expect(valid).toBeTruthy();
         expect(typeof noun).toBe("object");
-        if(typeof noun === "string") return;
-        expect(noun.o).toBe(true);
+        expect((noun as Noun & object).o).toBe(true);
         expect(joinNoun(noun)).toBe(v);
     }
 });
