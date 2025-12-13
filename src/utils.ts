@@ -7,6 +7,12 @@ export function isSpecialPronoun(word: string) {
     return word === "mi" || word === "sina";
 }
 
+export function isNounConnector(word: string) {
+    return word === "en" || word === "anu";
+}
+export function isVerbConnector(word: string) {
+    return word === "li";
+}
 export function isNounTerminator(word: string) {
     return word === "li" || word === "e";
 }
@@ -49,7 +55,8 @@ export function finalizeNoun(noun: Noun) {
         && (!noun.modifiers || noun.modifiers.length === 0)
         && !noun.ala && (!noun.alax || noun.alax.length === 0)
         && !noun.pi
-        && !noun.o) return noun.noun;
+        && !noun.o
+        && !noun.en && !noun.anu) return noun.noun;
     return noun;
 }
 export function finalizeVerb(verb: Verb) {
@@ -74,8 +81,9 @@ export function finalizeVerb(verb: Verb) {
 export function joinNoun(noun: Noun) {
     return typeof noun === "string"
     ? noun
-    : [noun.noun].concat(noun.modifiers ?? []).join(" ") + (noun.ala ? " ala" : "") + (noun.pi ? " pi " + joinNoun(noun.pi) : "")
-    + (noun.alax ? " ala " + noun.alax.join(" ") : "") + (noun.o ? " o" : "");
+    : [noun.noun].concat(noun.modifiers ?? []).join(" ") + (noun.ala ? " ala" : "")
+    + (noun.o ? " o" : "") + (noun.alax ? " ala " + noun.alax.join(" ") : "") + (noun.pi ? " pi " + joinNoun(noun.pi) : "")
+    + (noun.anu ? " anu " + joinNoun(noun.anu) : "") + (noun.en ? " en " + joinNoun(noun.en) : "");
 }
 export function joinVerb(verb: Verb) {
     return typeof verb === "string"

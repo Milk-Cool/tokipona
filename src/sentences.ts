@@ -96,7 +96,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
             }
             state = "subject";
         } else if(state === "subject") {
-            [noun, text, valid, isLast] = nextNoun(text);
+            [noun, text, valid, isLast] = nextNoun(text, true);
             if(noun === "") return [ret, text, true];
             if(!valid) return [{}, originalText, false];
             ret.subject = noun;

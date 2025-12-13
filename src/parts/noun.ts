@@ -1,13 +1,13 @@
-import { Noun } from "../types";
+import { Noun, Verb } from "../types";
 import { nextWord } from "../words";
-import { isNounTerminator, isSpecialPronoun, isVerbTerminator, finalizeNoun, isVerbModifier, isPreverb, MAX_ITER, TimeoutError } from "../utils";
+import { isNounTerminator, isSpecialPronoun, isVerbTerminator, finalizeNoun, isVerbModifier, isPreverb, MAX_ITER, TimeoutError, isNounConnector, isVerbConnector } from "../utils";
 
 /**
  * Gets the next noun in text. May also be used to get the next pronoun.
  * @param text Text to get the noun/pronoun from
  * @returns [noun/pronoun, remaining text, is valid, is last in sentence]
  */
-export function nextNoun(text: string): [Noun, string, boolean, boolean] {
+export function nextNoun(text: string, allowMultiple: boolean = false): [Noun, string, boolean, boolean] {
     const originalText = text;
     let ret: Noun = { noun: "" }, word: string, valid: boolean, tmpText: string, isAlax: boolean = false, iter = 0, isLast: boolean = false;
     while(true) {
@@ -26,10 +26,28 @@ export function nextNoun(text: string): [Noun, string, boolean, boolean] {
         if(word === "pi") {
             if(ret.noun === "") return ["", originalText, false, false];
             text = tmpText;
-            const [pi, piRem, piValid, isLastLocal] = nextNoun(text);
+            const [pi, piRem, piValid, isLastLocal] = nextNoun(text, allowMultiple);
             if(!piValid) return ["", originalText, false, false];
             ret.pi = pi;
             return [finalizeNoun(ret), piRem, true, isLastLocal];
+        }
+
+        if(allowMultiple && isNounConnector(word)) {
+            const conn = word;
+            text = tmpText;
+            while(true) {
+                [word, tmpText, valid, isLast] = nextWord(text);
+                if(!valid || word === "") return ["", originalText, false, false];
+                if(!isNounTerminator(word)) break;
+                text = tmpText;
+            }
+            let noun: Noun;
+            [noun, tmpText, valid, isLast] = nextNoun(text, true);
+            if(!valid) return ["", originalText, false, false];
+            if(conn === "anu") ret.anu = noun;
+            else if(conn === "en") ret.en = noun;
+            text = tmpText;
+            return [finalizeNoun(ret), text, true, isLast];
         }
 
         if(isSpecialPronoun(ret.noun) && isVerbTerminator(word)) {

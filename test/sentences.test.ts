@@ -183,3 +183,19 @@ test("correctly parses complex sentences (sentence la sentence)", () => {
     expect(joinVerb((res2.la as Sentence).verb as Verb)).toBe("wile moku");
     expect(joinNoun((res2.la as Sentence).subject as Noun)).toBe("moku");
 });
+
+test("correctly parses sentences with multiple subjects separated with anu and en", () => {
+    const test1 = "mi toki e toki pona en toki Inli";
+    const [res1, _rem1, val1] = nextSentence(test1);
+    testValidity(res1, val1, [true, true, true]);
+    expect(joinNoun(res1.object as Noun)).toBe("mi");
+    expect(joinVerb(res1.verb as Verb)).toBe("toki");
+    expect(joinNoun(res1.subject as Noun)).toBe("toki pona en toki Inli");
+
+    const test2 = "jan lili li wile e kili anu e suwi";
+    const [res2, _rem2, val2] = nextSentence(test2);
+    testValidity(res2, val2, [true, true, true]);
+    expect(joinNoun(res2.object as Noun)).toBe("jan lili");
+    expect(joinVerb(res2.verb as Verb)).toBe("wile");
+    expect(joinNoun(res2.subject as Noun)).toBe("kili anu suwi");
+});
