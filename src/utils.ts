@@ -87,5 +87,5 @@ export function joinTime(time: Time) {
     return time.modifiers ? time.modifiers.join(" ") : "";
 }
 
-export const MAX_ITER = 100000;
+export const MAX_ITER = 10000;
 export class TimeoutError extends Error {};

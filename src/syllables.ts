@@ -11,14 +11,15 @@ export function isUnofficial(sylOrWord: string) {
  * Gets the next syllable of the given text.
  * All invalid characters are ignored.
  * @param text Text to get the next syllable from
- * @returns [syllable, text, isValidSyllable, hasSeparator, hasStop]
+ * @returns [syllable, text, isValidSyllable, hasSeparator, hasStop, hasColon]
  */
-export function nextSyllable(text: string): [string, string, boolean, boolean, boolean] {
+export function nextSyllable(text: string): [string, string, boolean, boolean, boolean, boolean] {
     let syl = text.match(/^[^ptkmnslwjaeiouPTKMNSLWJAEIOU]*([ptkmnslwj]?[aeiou]|[PTKMNSLWJ][aeiou]|[AEIOU])(n(?=([^aeiou]|$)))?/)?.[0]; // all invalid chars are ignored
-    if(!syl) return ["", text, false, false, false];
+    if(!syl) return ["", text, false, false, false, false];
     text = text.replace(syl, ""); // only the first occurence
     const hasSeparator = " !&();:'\",.?-".split("").map(x => syl.includes(x)).includes(true);
     const hasStop = "!;:,.?".split("").map(x => syl.includes(x)).includes(true);
+    const hasColon = syl.includes(":");
     syl = syl.replace(/^[^ptkmnslwjaeiou]*/i, "");
-    return [syl, text, isValidSyllable(syl), hasSeparator, hasStop];
+    return [syl, text, isValidSyllable(syl), hasSeparator, hasStop, hasColon];
 }

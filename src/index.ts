@@ -4,3 +4,4 @@ export * from "./types";
 export * from "./parts";
 export * from "./utils";
 export * from "./sentences";
+export * from "./writing";

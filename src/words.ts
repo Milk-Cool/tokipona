@@ -34,19 +34,19 @@ export function isValidWord(word: string) {
 /**
  * Gets the next toki pona word from the given text.
  * @param text The text to get the next word from
- * @returns [word, remaining text, is word valid, is last in sentence, is unofficial]
+ * @returns [word, remaining text, is word valid, is last in sentence, is unofficial, has colon]
  */
-export function nextWord(text: string): [string, string, boolean, boolean, boolean] {
+export function nextWord(text: string): [string, string, boolean, boolean, boolean, boolean] {
     const regexTmp = /^[^ptkmnslwjaeiou]*/i;
-    let textTmp = text.replace(regexTmp, ""), textPeek = "", valid = true, sep = false, syl = "", word = "", iter = 0, isLast: boolean;
+    let textTmp = text.replace(regexTmp, ""), textPeek = "", valid = true, sep = false, syl = "", word = "", iter = 0, isLast: boolean, hasColon;
     while(true) {
         if(++iter > MAX_ITER) throw new TimeoutError("Max iterations reached while parsing a word");
-        [syl, textTmp, valid, sep, isLast] = nextSyllable(textTmp);
+        [syl, textTmp, valid, sep, isLast, hasColon] = nextSyllable(textTmp);
         if(syl === "" || sep) {
             text = text.replace(regexTmp, "").replace(word, "").replace(regexTmp, "");
-            return [word, text, isValidWord(word), text === "" || isLast, isUnofficial(word)];
+            return [word, text, isValidWord(word), text === "" || isLast, isUnofficial(word), hasColon];
         }
-        if(!valid) return ["", text, false, false, false];
+        if(!valid) return ["", text, false, false, false, false];
         word += syl;
     }
 }
