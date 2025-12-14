@@ -49,6 +49,12 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
             return [ret, text, true];
         }
 
+        if(state !== "object" && word === "li") {
+            text = tmpText;
+            ret.actions.push({});
+            state = "verb";
+        }
+
         if(state === "object") {
             [noun, text, valid, isLast] = nextNoun(text);
             if(noun === "") return [ret, text, true];
@@ -65,25 +71,28 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
                 text = tmpText;
             }
         } else if(state === "verb") {
-            // checking for simple nouns
+            if(!ret.actions)
+                ret.actions = [{}];
+            // checking for simple verbs
             if(isSimpleVerb(word)) {
                 text = tmpText;
-                ret.verb = { verb: word };
+                ret.actions.at(-1).verb = { verb: word };
                 while(true) {
                     if(++iter > MAX_ITER) throw err;
                     [word, tmpText, valid] = nextWord(text);
                     if(word === "") return [ret, text, true];
                     if(!valid) return [{}, originalText, false];
                     if(!isVerbModifier(word)) break;
-                    if(!ret.verb.modifiers) ret.verb.modifiers = [];
-                    ret.verb.modifiers.push(word);
+                    if(!(ret.actions.at(-1).verb as Verb & object).modifiers)
+                        (ret.actions.at(-1).verb as Verb & object).modifiers = [];
+                    (ret.actions.at(-1).verb as Verb & object).modifiers.push(word);
                     text = tmpText;
                 }
             } else {
                 [verb, text, valid] = nextVerb(text);
                 if(verb === "") return [ret, text, true];
                 if(!valid) return [{}, originalText, false];
-                ret.verb = verb;
+                ret.actions.at(-1).verb = verb;
 
                 while(true) {
                     if(++iter > MAX_ITER) throw err;
@@ -99,7 +108,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
             [noun, text, valid, isLast] = nextNoun(text, true);
             if(noun === "") return [ret, text, true];
             if(!valid) return [{}, originalText, false];
-            ret.subject = noun;
+            ret.actions.at(-1).subject = noun;
             state = "done";
 
             while(true) {
@@ -107,7 +116,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
                 [word, tmpText, valid] = nextWord(text);
                 if(word === "") return [ret, text, true];
                 if(!valid) return [{}, originalText, false];
-                if(!isNounTerminator(word)) break;
+                if(!isNounTerminator(word) || word === "li") break; // we CAN use li after the subject, that means multiple actions
                 text = tmpText;
             }
         } else if(state === "done") {
