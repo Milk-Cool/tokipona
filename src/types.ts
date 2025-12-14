@@ -12,6 +12,7 @@ export type Sentence = {
     time?: Time,
     taso?: boolean,
     la?: Sentence,
+    tan?: Sentence
 };
 
 export type WritingSystemType = "latin" | "sitelen-pona/ucsur" | "sitelen-pona/emoji";

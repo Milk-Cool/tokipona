@@ -35,6 +35,17 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
         }
     }
 
+    const checkTan = () => {
+        [word, tmpText, valid] = nextWord(text);
+        if(!valid) return [{}, originalText, false];
+        if(word === "tan") {
+            text = tmpText;
+            [ret.tan, text, valid] = nextSentence(text);
+            if(!valid) return [{}, originalText, false];
+            return [ret, text, true];
+        }
+    }
+
     while(true) {
         if(isLast) return [ret, text, true];
         if(++iter > MAX_ITER) throw err;
@@ -70,6 +81,8 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
                 if(!isNounTerminator(word)) break;
                 text = tmpText;
             }
+            
+            checkTan();
         } else if(state === "verb") {
             if(!ret.actions)
                 ret.actions = [{}];
@@ -103,6 +116,8 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
                     text = tmpText;
                 }
             }
+
+            checkTan();
             state = "subject";
         } else if(state === "subject") {
             [noun, text, valid, isLast] = nextNoun(text, true);
@@ -119,6 +134,8 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
                 if(!isNounTerminator(word) || word === "li") break; // we CAN use li after the subject, that means multiple actions
                 text = tmpText;
             }
+
+            checkTan();
         } else if(state === "done") {
             return [ret, text, true];
         }

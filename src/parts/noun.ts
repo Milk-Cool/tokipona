@@ -60,7 +60,7 @@ export function nextNoun(text: string, allowMultiple: boolean = false): [Noun, s
             if(ret.modifiers && ret.modifiers.length > idx) text = ret.modifiers.splice(-1, 1)[0] + " " + text; // do not touch the noun itself as there would be no noun
             return [finalizeNoun(ret), text, true, false];
         }
-        if(isNounTerminator(word)) return [finalizeNoun(ret), text, true, false];
+        if(isNounTerminator(word) || word === "tan") return [finalizeNoun(ret), text, true, false];
         
         text = tmpText;
 

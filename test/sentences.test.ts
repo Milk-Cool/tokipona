@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import { Action, nextSentence, Noun, Sentence, Time, Verb } from "../src/index";
 import { joinNoun, joinTime, joinVerb } from "../src/utils";
 
-const testValidity = (sent: Sentence, val: boolean, valExpected: [boolean, boolean, boolean, boolean?, boolean?]) => {
+const testValidity = (sent: Sentence, val: boolean, valExpected: [boolean, boolean, boolean, boolean?, boolean?, boolean?]) => {
     expect(val).toBeTruthy();
     if(valExpected[0]) expect(sent.object).toBeDefined();
     if(valExpected[1] || valExpected[2]) expect(sent.actions).toBeDefined();
@@ -10,6 +10,7 @@ const testValidity = (sent: Sentence, val: boolean, valExpected: [boolean, boole
     if(valExpected[2]) expect((sent.actions as Action[])[0].subject).toBeDefined();
     if(valExpected[3]) expect(sent.time).toBeDefined();
     if(valExpected[4]) expect(sent.la).toBeDefined();
+    if(valExpected[5]) expect(sent.tan).toBeDefined();
 };
 
 test("correctly parses simple sentences (only object-verb-subject)", () => {
@@ -219,4 +220,21 @@ test("correctly parses sentences with multiple actions separated with li", () =>
     expect(joinNoun((res2.actions as Action[])[0].subject as Noun)).toBe("kili");
     expect(joinVerb((res2.actions as Action[])[1].verb as Verb)).toBe("wile");
     expect(joinNoun((res2.actions as Action[])[1].subject as Noun)).toBe("suwi");
+});
+
+test("correctly parses sentences with tan", () => {
+    const test1 = "sina pilin ike tan seme?";
+    const [res1, _rem1, val1] = nextSentence(test1);
+    testValidity(res1, val1, [true, false, false, false, false, true]);
+    expect(joinNoun(res1.object as Noun)).toBe("sina pilin ike");
+    expect(joinNoun((res1.tan as Sentence).object as Noun)).toBe("seme");
+
+    const test2 = "jan lili li wile e kili tan jan lili li wile moku";
+    const [res2, _rem2, val2] = nextSentence(test2);
+    testValidity(res2, val2, [true, true, true, false, false, true]);
+    testValidity(res2.tan as Sentence, val2, [true, true, false]);
+    expect(joinNoun(res2.object as Noun)).toBe("jan lili");
+    expect(joinVerb((res2.actions as Action[])[0].verb as Verb)).toBe("wile");
+    expect(joinNoun((res2.actions as Action[])[0].subject as Noun)).toBe("kili");
+    expect(joinVerb(((res2.tan as Sentence).actions as Action[])[0].verb as Verb)).toBe("wile moku");
 });
