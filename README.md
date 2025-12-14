@@ -34,3 +34,9 @@ A JS library for parsing, translating and constructing toki pona.
 - [ ] tan
 - [x] latin toki pona <-> sitelen pona (Under-ConScript Unicode Registry, UCSUR) <-> sitelen emoji
 - [ ] Maybe more?
+
+## For the devs
+As the language evolves, it may be needed to update the following variables and functions:
+- `emoji` in `writing/sitelenemoji.ts`
+- `words` in `words.ts`
+- `isSpecialPronoun`, `isNounConnector`, `isSimpleVerb` and other functions starting with `is` in `utils.ts`
