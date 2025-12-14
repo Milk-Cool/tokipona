@@ -19,7 +19,9 @@ const punctuation = {
     left: String.fromCodePoint(0xf1990),
     right: String.fromCodePoint(0xf1991),
     dot: String.fromCodePoint(0xf199c),
-    colon: String.fromCodePoint(0xf199d)
+    colon: String.fromCodePoint(0xf199d),
+    ponaUpper: String.fromCodePoint(0xf1995),
+    ponaLower: String.fromCodePoint(0xf1996),
 };
 
 export class SitelenPonaUCSUR extends WritingSystem {
@@ -53,6 +55,10 @@ export class SitelenPonaUCSUR extends WritingSystem {
                 continue;
             } else if(c === punctuation.colon) {
                 out.push(":");
+                continue;
+            }
+            if(c === punctuation.ponaUpper || c === punctuation.ponaLower) {
+                out.push("pona");
                 continue;
             }
             if(c === punctuation.left) {

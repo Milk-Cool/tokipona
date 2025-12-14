@@ -20,7 +20,7 @@ test("the conversion from latin to sitelen pona (UCSUR) works", () => {
     expect(SitelenPonaUCSUR.to("mi jan Lili")).toBe("\u{f1934}\u{f1911}\u{f1990}\u{f1921}\u{f190e}\u{f1921}\u{f190e}\u{f1991}\u{f199c}");
 });
 test("the conversion from sitelen pona (UCSUR) to latin works", () => {
-    expect(SitelenPonaUCSUR.from("\u{f1934}\u{f196c}\u{f1954}\u{f1909}\u{f196c}\u{f1954}\u{f199c}")).toBe("mi toki pona e toki pona.");
+    expect(SitelenPonaUCSUR.from("\u{f1934}\u{f196c}\u{f1954}\u{f1909}\u{f196c}\u{f1996}\u{f199c}")).toBe("mi toki pona e toki pona.");
     expect(SitelenPonaUCSUR.from("\u{f1943}\u{f1934}\u{f1927}\u{f1948}\u{f199c}")).toBe("noka mi li pakala.");
 
     expect(SitelenPonaUCSUR.from("\u{f1934}\u{f1911}\u{f1990}\u{f1921}\u{f190e}\u{f1921}\u{f190e}\u{f1991}\u{f199c}")).toBe("mi jan Lili.");
