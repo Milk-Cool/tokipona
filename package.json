@@ -1,6 +1,6 @@
 {
   "name": "tokipona",
-  "version": "0.30.0",
+  "version": "0.30.1",
   "description": "A JS library for parsing, translating and constructing toki pona.",
   "keywords": [
     "toki",

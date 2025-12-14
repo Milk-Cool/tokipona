@@ -57,7 +57,7 @@ See [the docs](docs/index.md) for further usage instructions.
 - [x] tan
 - [x] Transliteration (latin toki pona <-> sitelen pona (Under-ConScript Unicode Registry, UCSUR) <-> sitelen emoji)
 - [x] Constructing text from objects
-- [ ] And more!
+- [x] And more!
 
 ## For the devs
 As the language evolves, it may be needed to update the following variables and functions:
