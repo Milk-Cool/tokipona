@@ -29,8 +29,7 @@ A JS library for parsing, translating and constructing toki pona.
 - [x] o for verbs
 - [x] anu, en
 - [x] li x li x [...]
-- [ ] potentially more sentences with la in them
-- [ ] Interjections
+- [x] Interjections
 - [x] tan
 - [x] latin toki pona <-> sitelen pona (Under-ConScript Unicode Registry, UCSUR) <-> sitelen emoji
 - [ ] Maybe more?

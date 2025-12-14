@@ -60,3 +60,18 @@ test("correctly parses verbs with o", () => {
         expect((verb as Verb & object).o).toBeTruthy();
     }
 });
+
+test("correctly parses verbs with a", () => {
+    const tests: Record<string, string> = {
+        "toki a": "toki a",
+        "o sitelen a!": "o sitelen a"
+    }
+    for(const k in tests) {
+        const v = tests[k];
+        const [verb, _rest, valid] = nextVerb(k);
+        expect(valid).toBeTruthy();
+        expect(joinVerb(verb)).toBe(v);
+        expect(typeof verb).toBe("object");
+        expect((verb as Verb & object).a).toBeTruthy();
+    }
+});

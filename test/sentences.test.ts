@@ -238,3 +238,15 @@ test("correctly parses sentences with tan", () => {
     expect(joinNoun((res2.actions as Action[])[0].subject as Noun)).toBe("kili");
     expect(joinVerb(((res2.tan as Sentence).actions as Action[])[0].verb as Verb)).toBe("wile moku");
 });
+
+test("correctly parses standalone interjections", () => {
+    const test1 = "a a a!";
+    const [res1, _rem1, val1] = nextSentence(test1);
+    expect(val1).toBeTruthy();
+    expect(res1.interjection).toBe("a a a");
+
+    const test2 = "mu!";
+    const [res2, _rem2, val2] = nextSentence(test2);
+    expect(val2).toBeTruthy();
+    expect(res2.interjection).toBe("mu");
+});

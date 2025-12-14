@@ -1,6 +1,7 @@
 export type Time = { modifiers?: string[] };
-export type Noun = string | { noun: string, modifiers?: string[], ala?: boolean, pi?: Noun, alax?: string[], o?: boolean, anu?: Noun, en?: Noun };
-export type Verb = string | { verb: string, modifiers?: string[], ala?: boolean, alax?: string[], o?: boolean };
+export type Noun = string | { noun: string, modifiers?: string[], ala?: boolean, pi?: Noun, alax?: string[], o?: boolean, anu?: Noun, en?: Noun, a?: boolean };
+export type Verb = string | { verb: string, modifiers?: string[], ala?: boolean, alax?: string[], o?: boolean, a?: boolean };
+export type Interjection = "a a a" | "mu";
 
 export type Action = {
     verb?: Verb,
@@ -12,7 +13,8 @@ export type Sentence = {
     time?: Time,
     taso?: boolean,
     la?: Sentence,
-    tan?: Sentence
+    tan?: Sentence,
+    interjection?: Interjection
 };
 
 export type WritingSystemType = "latin" | "sitelen-pona/ucsur" | "sitelen-pona/emoji";

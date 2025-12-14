@@ -29,6 +29,11 @@ export function nextVerb(text: string): [Verb, string, boolean, boolean] {
         
         text = tmpText;
 
+        if(word === "a") {
+            ret.a = true;
+            continue;
+        }
+
         if(!isAlax && ret.verb === "") {
             ret.verb = word;
             continue;

@@ -91,3 +91,18 @@ test("correctly parses nouns with o", () => {
         expect(joinNoun(noun)).toBe(v);
     }
 });
+
+test("correctly parses nouns with a", () => {
+    const tests: Record<string, string> = {
+        "sina suwi a!": "sina suwi a",
+        "mi pilin ike a!": "mi pilin ike a"
+    }
+    for(const k in tests) {
+        const v = tests[k];
+        const [noun, _rest, valid] = nextNoun(k);
+        expect(valid).toBeTruthy();
+        expect(typeof noun).toBe("object");
+        expect((noun as Noun & object).a).toBe(true);
+        expect(joinNoun(noun)).toBe(v);
+    }
+});

@@ -16,6 +16,15 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
     let noun: Noun, verb: Verb, word: string, valid: boolean, state: SentenceParseState = "object", tmpText: string, iter = 0, isLast: boolean = false;
 
     [word, tmpText, valid] = nextWord(text);
+    if(word === "a" || word === "mu") {
+        ret.interjection = word === "a"
+            ? "a a a"
+            : word === "mu"
+            ? "mu"
+            : "mu"; // fallback, never used
+        text = tmpText;
+        return [ret, text, true];
+    }
     if(word === "taso") {
         // but
         text = tmpText;

@@ -23,6 +23,12 @@ export function nextNoun(text: string, allowMultiple: boolean = false): [Noun, s
             return [finalizeNoun(ret), text, true, isLast];
         }
 
+        if(word === "a") {
+            ret.a = true;
+            text = tmpText;
+            continue;
+        }
+
         if(word === "pi") {
             if(ret.noun === "") return ["", originalText, false, false];
             text = tmpText;

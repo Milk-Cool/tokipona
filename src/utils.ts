@@ -55,7 +55,7 @@ export function finalizeNoun(noun: Noun) {
         && (!noun.modifiers || noun.modifiers.length === 0)
         && !noun.ala && (!noun.alax || noun.alax.length === 0)
         && !noun.pi
-        && !noun.o
+        && !noun.o && !noun.a
         && !noun.en && !noun.anu) return noun.noun;
     return noun;
 }
@@ -74,7 +74,7 @@ export function finalizeVerb(verb: Verb) {
         && (!verb.modifiers || verb.modifiers.length === 0)
         && !verb.ala
         && (!verb.alax || verb.alax.length === 0)
-        && !verb.o) return verb.verb;
+        && !verb.o && !verb.a) return verb.verb;
     return verb;
 }
 
@@ -82,14 +82,14 @@ export function joinNoun(noun: Noun) {
     return typeof noun === "string"
     ? noun
     : [noun.noun].concat(noun.modifiers ?? []).join(" ") + (noun.ala ? " ala" : "")
-    + (noun.o ? " o" : "") + (noun.alax ? " ala " + noun.alax.join(" ") : "") + (noun.pi ? " pi " + joinNoun(noun.pi) : "")
-    + (noun.anu ? " anu " + joinNoun(noun.anu) : "") + (noun.en ? " en " + joinNoun(noun.en) : "");
+    + (noun.alax ? " ala " + noun.alax.join(" ") : "") + (noun.pi ? " pi " + joinNoun(noun.pi) : "")
+    + (noun.anu ? " anu " + joinNoun(noun.anu) : "") + (noun.en ? " en " + joinNoun(noun.en) : "") + (noun.a ? " a" : "") + (noun.o ? " o" : "");
 }
 export function joinVerb(verb: Verb) {
     return typeof verb === "string"
     ? verb
     : (verb.o ? "o " : "") + [verb.verb].concat(verb.modifiers ?? []).join(" ") + (verb.ala ? " ala" : "")
-    + (verb.alax ? " ala " + verb.alax.join(" ") : "");
+    + (verb.alax ? " ala " + verb.alax.join(" ") : "") + (verb.a ? " a" : "");
 }
 export function joinTime(time: Time) {
     return time.modifiers ? time.modifiers.join(" ") : "";
