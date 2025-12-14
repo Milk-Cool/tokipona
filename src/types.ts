@@ -14,7 +14,8 @@ export type Sentence = {
     taso?: boolean,
     la?: Sentence,
     tan?: Sentence,
-    interjection?: Interjection
+    interjection?: Interjection,
+    hasColon?: boolean
 };
 
 export type WritingSystemType = "latin" | "sitelen-pona/ucsur" | "sitelen-pona/emoji";

@@ -32,6 +32,7 @@ A JS library for parsing, translating and constructing toki pona.
 - [x] Interjections
 - [x] tan
 - [x] latin toki pona <-> sitelen pona (Under-ConScript Unicode Registry, UCSUR) <-> sitelen emoji
+- [x] constructing sentences from objects
 - [ ] Maybe more?
 
 ## For the devs

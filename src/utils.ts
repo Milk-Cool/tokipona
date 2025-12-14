@@ -1,4 +1,4 @@
-import { Noun, Time, Verb } from "./types";
+import { Noun, Sentence, Time, Verb } from "./types";
 
 /**
  * Returns true when the pronoun does not need a "li" after it in sentences, false otherwise.
@@ -93,6 +93,29 @@ export function joinVerb(verb: Verb) {
 }
 export function joinTime(time: Time) {
     return time.modifiers ? time.modifiers.join(" ") : "";
+}
+
+export function joinSentences(...sentences: Sentence[]) {
+    return sentences.map(sentence => {
+        if(sentence.interjection) return sentence.interjection + ".";
+        let out = "";
+        if(sentence.taso) out += "taso ";
+        if(sentence.time) out += `tenpo${sentence.time.modifiers ? " " + sentence.time.modifiers.join(" ") : ""} la, `;
+        if(sentence.object) out += joinNoun(sentence.object);
+        if(sentence.actions) sentence.actions.forEach(action => {
+            if(action.verb) out += " " + (
+                (typeof sentence.object === "string" && isSpecialPronoun(sentence.object))
+                || (typeof sentence.object === "object" && isSpecialPronoun(sentence.object.noun))
+                ? ""
+                : "li "
+            ) + joinVerb(action.verb);
+            if(action.subject) out += " e " + joinNoun(action.subject);
+        });
+        if(sentence.tan) out += " tan " + joinSentences(sentence.tan).replace(/(\.|:)$/, "");
+        if(sentence.la) out += " la, " + joinSentences(sentence.la).replace(/(\.|:)$/, "");
+        out += sentence.hasColon ? ":" : ".";
+        return out;
+    }).join(" ");
 }
 
 export const MAX_ITER = 10000;
