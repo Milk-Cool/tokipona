@@ -14,9 +14,9 @@ console.log(tokipona.nextNoun("jan lili pona")[0]);
 console.log(tokipona.nextSentence("jan lili li wile moku e suwi")[0]);
 /*
 {
-  object: { noun: 'jan', modifiers: [ 'lili' ] },
+  subject: { noun: 'jan', modifiers: [ 'lili' ] },
   actions: [
-    { verb: { verb: 'wile', modifiers: [ 'moku' ] }, subject: 'suwi' }
+    { verb: { verb: 'wile', modifiers: [ 'moku' ] }, object: 'suwi' }
   ]
 }
 */
@@ -25,8 +25,8 @@ console.log(tokipona.nextSentence("tenpo ni la, ona li pilin ike")[0]);
 /*
 {
   time: { modifiers: [ 'ni' ] },
-  object: 'ona',
-  actions: [ { verb: { verb: 'pilin' }, subject: 'ike' } ]
+  subject: 'ona',
+  actions: [ { verb: { verb: 'pilin' }, object: 'ike' } ]
 }
 */
 ```
@@ -34,9 +34,9 @@ console.log(tokipona.nextSentence("tenpo ni la, ona li pilin ike")[0]);
 See [the docs](docs/index.md) for further usage instructions.
 
 ## Quirks
-- Sentences without "li" (for example, "mi pona") only return the object when parsed (which is "mi pona"). That is because it would be much more difficult to parse them as a subject and an object ("i am good") so it's easier to parse them as just the object ("good me"). However, sentences like "mi toki e toki pona" will be parsed as "mi" / "toki" / "toki pona"
-- Sentences with "li" but without a clear subject (i. e. "ona li ike") only return the object and the verb when parsed.
-- After parsing a sentence like "[object] o [verb]", only the object will have the "o" property set.
+- Sentences without "li" (for example, "mi pona") only return the subject when parsed (which is "mi pona"). That is because it would be much more difficult to parse them as a object and an subject ("i am good") so it's easier to parse them as just the subject ("good me"). However, sentences like "mi toki e toki pona" will be parsed as "mi" / "toki" / "toki pona"
+- Sentences with "li" but without a clear object (i. e. "ona li ike") only return the subject and the verb when parsed.
+- After parsing a sentence like "[subject] o [verb]", only the subject will have the "o" property set.
 
 ## Features:
 

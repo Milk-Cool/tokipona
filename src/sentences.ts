@@ -79,7 +79,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
             [noun, text, valid, isLast] = nextNoun(text);
             if(noun === "") return [ret, text, true];
             if(!valid) return [{}, originalText, false];
-            ret.object = noun;
+            ret.subject = noun;
             state = "verb";
 
             while(true) {
@@ -132,7 +132,7 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
             [noun, text, valid, isLast] = nextNoun(text, true);
             if(noun === "") return [ret, text, true];
             if(!valid) return [{}, originalText, false];
-            ret.actions.at(-1).subject = noun;
+            ret.actions.at(-1).object = noun;
             state = "done";
 
             while(true) {

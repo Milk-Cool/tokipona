@@ -5,10 +5,10 @@ export type Interjection = "a a a" | "mu";
 
 export type Action = {
     verb?: Verb,
-    subject?: Noun
+    object?: Noun
 };
 export type Sentence = {
-    object?: Noun,
+    subject?: Noun,
     actions?: Action[],
     time?: Time,
     taso?: boolean,

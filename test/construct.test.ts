@@ -5,20 +5,20 @@ test("correctly joins sentences", () => {
     expect(joinSentences(
         {
             time: { modifiers: ["pini", "lili"] },
-            object: {
+            subject: {
                 noun: "mi",
                 modifiers: ["pilin", "ike"]
             },
             la: {
                 time: { modifiers: ["ni"] },
-                object: {
+                subject: {
                     noun: "mi",
                     modifiers: ["pilin", "pona"]
                 }
             }
         },
         {
-            object: {
+            subject: {
                 noun: "mi",
                 modifiers: ["pona"]
             }
@@ -27,7 +27,7 @@ test("correctly joins sentences", () => {
 
     expect(joinSentences(
         {
-            object: {
+            subject: {
                 noun: "soweli"
             },
             actions: [

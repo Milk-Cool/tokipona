@@ -101,15 +101,15 @@ export function joinSentences(...sentences: Sentence[]) {
         let out = "";
         if(sentence.taso) out += "taso ";
         if(sentence.time) out += `tenpo${sentence.time.modifiers ? " " + sentence.time.modifiers.join(" ") : ""} la, `;
-        if(sentence.object) out += joinNoun(sentence.object);
+        if(sentence.subject) out += joinNoun(sentence.subject);
         if(sentence.actions) sentence.actions.forEach(action => {
             if(action.verb) out += " " + (
-                (typeof sentence.object === "string" && isSpecialPronoun(sentence.object))
-                || (typeof sentence.object === "object" && isSpecialPronoun(sentence.object.noun))
+                (typeof sentence.subject === "string" && isSpecialPronoun(sentence.subject))
+                || (typeof sentence.subject === "object" && isSpecialPronoun(sentence.subject.noun))
                 ? ""
                 : "li "
             ) + joinVerb(action.verb);
-            if(action.subject) out += " e " + joinNoun(action.subject);
+            if(action.object) out += " e " + joinNoun(action.object);
         });
         if(sentence.tan) out += " tan " + joinSentences(sentence.tan).replace(/(\.|:)$/, "");
         if(sentence.la) out += " la, " + joinSentences(sentence.la).replace(/(\.|:)$/, "");
