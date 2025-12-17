@@ -6,10 +6,10 @@ A sentence's typedef looks like this:
 type Time = { modifiers?: string[] }; // Ex. { modifiers: ['kama', 'lili'] }
 type Action = {
     verb?: Verb, // The verb of the action
-    subject?: Noun // The subject (target) of the action
+    object?: Noun // The object (target) of the action
 };
 type Sentence = {
-    object?: Noun, // The object of the sentence; the person, animal or object performing the actions
+    subject?: Noun, // The subject of the sentence; the person, animal or object performing the actions
     actions?: Action[], // The actions, separated by 'li'
     time?: Time, // The time specified in the sentence
     taso?: boolean, // Whether the sentence starts with taso
@@ -29,7 +29,7 @@ console.log(sentence);
 /*
 {
   time: { modifiers: [ 'ni' ] },
-  object: { noun: 'jan', modifiers: [ 'lili' ] },
+  subject: { noun: 'jan', modifiers: [ 'lili' ] },
   actions: [
     { verb: 'wile', subject: 'kili' },
     { verb: { verb: 'wile', modifiers: [ 'suli' ] }, subject: 'suwi' }
