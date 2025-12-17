@@ -115,15 +115,15 @@ export function nextSentence(text: string): [Sentence, string, boolean] {
                 if(verb === "") return [ret, text, true];
                 if(!valid) return [{}, originalText, false];
                 ret.actions.at(-1).verb = verb;
+            }
 
-                while(true) {
-                    if(++iter > MAX_ITER) throw err;
-                    [word, tmpText, valid] = nextWord(text);
-                    if(word === "") return [ret, text, true];
-                    if(!valid) return [{}, originalText, false];
-                    if(!isVerbTerminator(word)) break;
-                    text = tmpText;
-                }
+            while(true) {
+                if(++iter > MAX_ITER) throw err;
+                [word, tmpText, valid] = nextWord(text);
+                if(word === "") return [ret, text, true];
+                if(!valid) return [{}, originalText, false];
+                if(!isVerbTerminator(word)) break;
+                text = tmpText;
             }
 
             checkTan();
